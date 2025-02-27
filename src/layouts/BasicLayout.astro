@@ -1,4 +1,5 @@
 ---
+import NewsletterSection from '../components/NewsletterSection.astro'
 import type { Props } from '../types/basicLayoutTypes'
 
 const {title, description}: Props = Astro.props
@@ -19,5 +20,6 @@ const {title, description}: Props = Astro.props
 		<main class="p-10 md:p-16 lg:px-24 lg:py-18">
 			<slot />
 		</main>
+		<NewsletterSection></NewsletterSection>
 	</body>
 </html>
