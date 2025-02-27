@@ -16,6 +16,8 @@ const {title, description}: Props = Astro.props
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<main class="p-10 md:p-16 lg:px-24 lg:py-18">
+			<slot />
+		</main>
 	</body>
 </html>
