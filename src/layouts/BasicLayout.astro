@@ -1,26 +1,42 @@
 ---
-import NewsletterSection from '../components/NewsletterSection.astro'
 import type { Props } from '../types/basicLayoutTypes'
 
-const {title, description}: Props = Astro.props
+const { title, description }: Props = Astro.props
 ---
-
 
 <!doctype html>
 <html lang="pl">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot name="header" />
-		<main class="p-10 md:p-16 lg:px-24 lg:py-18">
-			<slot />
-		</main>
-		<slot name="newsletter" />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot name="header" />
+    <main class="main-content">
+      <slot />
+    </main>
+    <slot name="newsletter" />
+  </body>
 </html>
+
+<style>
+  .main-content {
+    padding: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .main-content {
+      padding: 4rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-content {
+      padding: 4.5rem 6rem;
+    }
+  }
+</style>

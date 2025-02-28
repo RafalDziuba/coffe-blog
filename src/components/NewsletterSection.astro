@@ -1,11 +1,75 @@
+<section class="newsletter-section">
+  <h2 class="newsletter-heading">Get the best sent to your inbox, every month</h2>
 
-<section class="p-10 md:p-16 lg:px-24 lg:py-18 flex flex-col flex-wrap bg-green-950 w-full text-white">
-<h2 class="text-white text-center text-3xl mb-10">Get the best sent to your inbox, every month</h2>
+  <form class="newsletter-form">
+    <input
+      class="newsletter-input"
+      placeholder="Podaj swój email"
+      type="text"
+      name="email"
+      id="email"
+    />
+    <button class="newsletter-button">Subskrybuj</button>
+  </form>
 
-<form class="flex flex-col gap-4">
-    <input class="h-12 px-5 py-2 bg-white rounded text-gray-400" placeholder="Podaj swój email" type="text" name="email" id="email">
-    <button class="h-12 bg-green-200 text-green-950 rounded">Subskrybuj</button>
-</form>
-
-<p class="text-center text-xs">subtekst</p>
+  <p class="newsletter-subtext">subtekst</p>
 </section>
+
+<style>
+  .newsletter-section {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: rgb(5, 46, 22); /* bg-green-950 */
+    width: 100%;
+    color: white;
+  }
+
+  .newsletter-heading {
+    color: white;
+    text-align: center;
+    font-size: 1.875rem; /* text-3xl */
+    line-height: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .newsletter-input {
+    height: 3rem;
+    padding: 0.5rem 1.25rem;
+    background-color: white;
+    border-radius: 0.25rem;
+    color: rgb(156, 163, 175); /* text-gray-400 */
+  }
+
+  .newsletter-button {
+    height: 3rem;
+    background-color: rgb(188, 240, 218); /* bg-green-200 */
+    color: rgb(5, 46, 22); /* text-green-950 */
+    border-radius: 0.25rem;
+  }
+
+  .newsletter-subtext {
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: var(--font-primary);
+  }
+
+  @media (min-width: 768px) {
+    .newsletter-section {
+      padding: 4rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .newsletter-section {
+      padding: 4.5rem 6rem;
+    }
+  }
+</style>
