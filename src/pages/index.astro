@@ -1,12 +1,8 @@
 ---
-import "../styles/global.css";
-
 import BasicLayout from '../layouts/BasicLayout.astro';
 import NewsletterSection from "../components/NewsletterSection.astro";
 ---
 
 <BasicLayout title='Blog o kawie' description='desc'>
-	<div class="w-12 h-12 bg-green-950"></div>
-	<div class="w-12 h-12 bg-red-950 mt-4"></div>
 	<NewsletterSection slot="newsletter" />
 </BasicLayout>

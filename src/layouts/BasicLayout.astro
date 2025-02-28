@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 import type { Props } from '../types/basicLayoutTypes'
 
 const { title, description }: Props = Astro.props
@@ -16,27 +18,10 @@ const { title, description }: Props = Astro.props
   </head>
   <body>
     <slot name="header" />
-    <main class="main-content">
+    <main class="main-content global-padding">
       <slot />
     </main>
     <slot name="newsletter" />
   </body>
 </html>
 
-<style>
-  .main-content {
-    padding: 2.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .main-content {
-      padding: 4rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .main-content {
-      padding: 4.5rem 6rem;
-    }
-  }
-</style>
