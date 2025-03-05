@@ -1,0 +1,229 @@
+---
+// Astro umożliwia definiowanie reaktywnych wartości na poziomie komponentu
+---
+
+<nav class="navigation global-padding">
+  <div class="navigation__container">
+    <a href="/" class="navigation__logo" aria-label="Strona główna">
+      <span class="navigation__logo-text">CoffeeBlog</span>
+    </a>
+
+    <button
+      class="navigation__toggle"
+      aria-label="Otwórz menu nawigacyjne"
+      aria-expanded="false"
+      aria-controls="navigation-menu"
+    >
+      <span class="navigation__toggle-bar"></span>
+      <span class="navigation__toggle-bar"></span>
+      <span class="navigation__toggle-bar"></span>
+    </button>
+
+    <div class="navigation__menu" id="navigation-menu">
+      <ul class="navigation__list">
+        <li class="navigation__item">
+          <a href="/" class="navigation__link">Strona główna</a>
+        </li>
+        <li class="navigation__item">
+          <a href="/blog" class="navigation__link">Blog</a>
+        </li>
+        <li class="navigation__item">
+          <a href="/o-nas" class="navigation__link">O nas</a>
+        </li>
+        <li class="navigation__item">
+          <a href="/kontakt" class="navigation__link">Kontakt</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .navigation {
+    position: relative;
+    width: 100%;
+    z-index: 99;
+
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 64px;
+    line-height: 64px;
+  }
+
+  .navigation__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  .navigation__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    z-index: 101;
+  }
+
+  .navigation__logo-text {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+
+  .navigation__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 2rem;
+    height: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+    position: relative;
+  }
+
+  .navigation__toggle-bar {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+    left: 0;
+  }
+
+  .navigation__toggle-bar:nth-child(1) {
+    top: 0;
+  }
+
+  .navigation__toggle-bar:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .navigation__toggle-bar:nth-child(3) {
+    bottom: 0;
+  }
+
+  .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(3) {
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+  }
+
+  .navigation__menu {
+    position: fixed;
+    top: 64px; /* Wysokość nawigacji */
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: calc(100vh - 64px); /* Wysokość ekranu minus wysokość nawigacji */
+    background-color: white;
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .navigation__toggle[aria-expanded='true'] ~ .navigation__menu {
+    right: 0;
+  }
+
+  .navigation__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .navigation__item {
+    margin-bottom: 1rem;
+  }
+
+  .navigation__link {
+    display: block;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.25rem;
+    transition: color 0.2s ease;
+  }
+
+  .navigation__link:hover,
+  .navigation__link:focus {
+    color: #0077cc;
+  }
+
+  /* Wersja dla desktop (powyżej 1023px) */
+  @media (min-width: 1024px) {
+    .navigation__toggle {
+      display: none;
+    }
+
+    .navigation__menu {
+      position: static;
+      width: auto;
+      height: auto;
+      padding: 0;
+      background-color: transparent;
+      overflow-y: visible;
+    }
+
+    .navigation__list {
+      display: flex;
+      align-items: center;
+    }
+
+    .navigation__item {
+      margin: 0 0 0 1.5rem;
+    }
+
+    .navigation__link {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // Kod JavaScript do obsługi przycisku nawigacji
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.querySelector('.navigation__toggle')
+
+    if (toggleButton) {
+      toggleButton.addEventListener('click', () => {
+        const expanded = toggleButton.getAttribute('aria-expanded') === 'true'
+        toggleButton.setAttribute('aria-expanded', (!expanded).toString())
+
+        // Opcjonalnie: zablokuj przewijanie strony, gdy menu jest otwarte
+        document.body.style.overflow = !expanded ? 'hidden' : ''
+      })
+
+      // Zamknij menu po kliknięciu w link (na urządzeniach mobilnych)
+      const navLinks = document.querySelectorAll('.navigation__link')
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth < 1024) {
+            toggleButton.setAttribute('aria-expanded', 'false')
+            document.body.style.overflow = ''
+          }
+        })
+      })
+
+      // Obsługa klawisza Escape do zamykania menu
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && toggleButton.getAttribute('aria-expanded') === 'true') {
+          toggleButton.setAttribute('aria-expanded', 'false')
+          document.body.style.overflow = ''
+        }
+      })
+    }
+  })
+</script>
