@@ -1,12 +1,71 @@
 ---
 // Astro umożliwia definiowanie reaktywnych wartości na poziomie komponentu
+const { pathname } = Astro.url
+
+// Funkcja pomocnicza do sprawdzania, czy link jest aktywny
+const isActive = (href: string) => {
+  if (href === '/') {
+    return pathname === href
+  }
+  return pathname.startsWith(href)
+}
 ---
 
 <nav class="navigation global-padding">
   <div class="navigation__container">
-    <a href="/" class="navigation__logo" aria-label="Strona główna">
-      <span class="navigation__logo-text">CoffeeBlog</span>
-    </a>
+    <div class="navigation__left">
+      <a href="/" class="navigation__logo" aria-label="Strona główna">
+        <span class="navigation__logo-text">CoffeeBlog</span>
+      </a>
+
+      <!-- Standardowe linki w wersji desktopowej -->
+      <ul class="navigation__list navigation__list--standard navigation__list--desktop">
+        <li class="navigation__item">
+          <a href="/" class="navigation__link" aria-current={isActive('/') ? 'page' : undefined}
+            >Strona główna</a
+          >
+        </li>
+        <li class="navigation__item">
+          <a
+            href="/articles"
+            class="navigation__link"
+            aria-current={isActive('/articles') ? 'page' : undefined}>Blog</a
+          >
+        </li>
+        <li class="navigation__item">
+          <a
+            href="/o-nas"
+            class="navigation__link"
+            aria-current={isActive('/o-nas') ? 'page' : undefined}>O nas</a
+          >
+        </li>
+        <li class="navigation__item">
+          <a
+            href="/kontakt"
+            class="navigation__link"
+            aria-current={isActive('/kontakt') ? 'page' : undefined}>Kontakt</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <!-- Wyróżnione linki w wersji desktopowej -->
+    <ul class="navigation__list navigation__list--featured navigation__list--desktop">
+      <li class="navigation__item navigation__item--featured">
+        <a
+          href="/newsletter"
+          class="navigation__link newsletter-link"
+          aria-current={isActive('/newsletter') ? 'page' : undefined}>Newsletter</a
+        >
+      </li>
+      <li class="navigation__item navigation__item--featured">
+        <a
+          href="/kursy"
+          class="navigation__link navigation__link--featured"
+          aria-current={isActive('/kursy') ? 'page' : undefined}>Szkolenia</a
+        >
+      </li>
+    </ul>
 
     <button
       class="navigation__toggle"
@@ -19,35 +78,74 @@
       <span class="navigation__toggle-bar"></span>
     </button>
 
-    <div class="navigation__menu" id="navigation-menu">
-      <ul class="navigation__list">
-        <li class="navigation__item">
-          <a href="/" class="navigation__link">Strona główna</a>
-        </li>
-        <li class="navigation__item">
-          <a href="/blog" class="navigation__link">Blog</a>
-        </li>
-        <li class="navigation__item">
-          <a href="/o-nas" class="navigation__link">O nas</a>
-        </li>
-        <li class="navigation__item">
-          <a href="/kontakt" class="navigation__link">Kontakt</a>
-        </li>
-      </ul>
+    <div class="navigation__menu global-padding" id="navigation-menu">
+      <div class="navigation__menu-content">
+        <!-- Standardowe linki w wersji mobilnej -->
+        <ul class="navigation__list navigation__list--standard">
+          <li class="navigation__item">
+            <a href="/" class="navigation__link" aria-current={isActive('/') ? 'page' : undefined}
+              >Strona główna</a
+            >
+          </li>
+          <li class="navigation__item">
+            <a
+              href="/blog"
+              class="navigation__link"
+              aria-current={isActive('/blog') ? 'page' : undefined}>Blog</a
+            >
+          </li>
+          <li class="navigation__item">
+            <a
+              href="/o-nas"
+              class="navigation__link"
+              aria-current={isActive('/o-nas') ? 'page' : undefined}>O nas</a
+            >
+          </li>
+          <li class="navigation__item">
+            <a
+              href="/kontakt"
+              class="navigation__link"
+              aria-current={isActive('/kontakt') ? 'page' : undefined}>Kontakt</a
+            >
+          </li>
+        </ul>
+
+        <!-- Separator wizualny przed wyróżnionymi linkami (tylko w wersji mobilnej) -->
+        <div class="navigation__separator" aria-hidden="true"></div>
+
+        <!-- Wyróżnione linki w wersji mobilnej -->
+        <ul class="navigation__list navigation__list--featured">
+          <li class="navigation__item navigation__item--featured">
+            <a
+              href="/newsletter"
+              class="navigation__link navigation__link--featured"
+              aria-current={isActive('/newsletter') ? 'page' : undefined}>Newsletter</a
+            >
+          </li>
+          <li class="navigation__item navigation__item--featured">
+            <a
+              href="/kursy"
+              class="navigation__link navigation__link--featured"
+              aria-current={isActive('/kursy') ? 'page' : undefined}>Kursy</a
+            >
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
+
+<div class="navigation__overlay"></div>
 
 <style>
   .navigation {
     position: relative;
     width: 100%;
     z-index: 99;
-
     padding-top: 0;
     padding-bottom: 0;
     height: 64px;
-    line-height: 64px;
+    border-bottom: 1px solid #e0e0e0;
   }
 
   .navigation__container {
@@ -55,6 +153,12 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
+    height: 100%;
+  }
+
+  .navigation__left {
+    display: flex;
+    align-items: center;
   }
 
   .navigation__logo {
@@ -63,11 +167,28 @@
     text-decoration: none;
     color: inherit;
     z-index: 101;
+    transition: opacity 0.2s ease;
+  }
+
+  .navigation__logo:hover {
+    opacity: 0.8;
   }
 
   .navigation__logo-text {
     font-weight: bold;
     font-size: 1.25rem;
+    white-space: nowrap;
+  }
+
+  /* Ukrycie linków desktopowych w wersji mobilnej */
+  .navigation__list--desktop {
+    display: none !important;
+    visibility: hidden;
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .navigation__toggle {
@@ -127,6 +248,8 @@
     right: -100%;
     width: 80%;
     max-width: 300px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     height: calc(100vh - 64px); /* Wysokość ekranu minus wysokość nawigacji */
     background-color: white;
     transition: right 0.3s ease-in-out;
@@ -134,32 +257,105 @@
     z-index: 100;
   }
 
+  .navigation__menu-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   .navigation__toggle[aria-expanded='true'] ~ .navigation__menu {
     right: 0;
   }
 
+  .navigation__overlay {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 64px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 98;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .navigation__overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .navigation__list {
+    display: flex;
+    flex-direction: column;
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
   .navigation__item {
-    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }
+
+  .navigation__item:last-child {
+    margin-bottom: 0;
   }
 
   .navigation__link {
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 0.5rem 0;
     text-decoration: none;
     color: #333;
     font-size: 1.25rem;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    position: relative;
   }
 
-  .navigation__link:hover,
-  .navigation__link:focus {
-    color: #0077cc;
+  .navigation__link:hover {
+    opacity: 0.8;
+  }
+
+  .navigation__link[aria-current='page'] {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* Style dla wyróżnionych linków */
+  .navigation__separator {
+    width: 100%;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .navigation__item--featured {
+    margin-top: 0.25rem;
+  }
+
+  .navigation__link--featured {
+    color: var(--primary);
+    position: relative;
+  }
+
+  /* Efekt hover dla wyróżnionych linków */
+  .navigation__link--featured:hover {
+    opacity: 0.8;
+  }
+
+  .newsletter-link {
+    color: var(--primary);
+    font-weight: 600;
+    position: relative;
+  }
+
+  /* Efekt hover dla linku newsletter */
+  .newsletter-link:hover {
+    opacity: 0.8;
   }
 
   /* Wersja dla desktop (powyżej 1023px) */
@@ -169,26 +365,92 @@
     }
 
     .navigation__menu {
+      display: none;
+    }
+
+    /* Pokazanie linków desktopowych w wersji desktopowej */
+    .navigation__list--desktop {
+      display: flex !important;
+      visibility: visible;
       position: static;
       width: auto;
       height: auto;
-      padding: 0;
-      background-color: transparent;
-      overflow-y: visible;
-    }
-
-    .navigation__list {
-      display: flex;
+      overflow: visible;
+      clip: auto;
+      clip-path: none;
+      white-space: nowrap;
+      flex-direction: row;
       align-items: center;
     }
 
+    .navigation__list--standard.navigation__list--desktop {
+      margin-left: 2rem;
+    }
+
+    .navigation__overlay {
+      display: none;
+    }
+
     .navigation__item {
-      margin: 0 0 0 1.5rem;
+      margin: 0 1rem 0 0;
+      justify-content: flex-start;
+    }
+
+    .navigation__item:last-child {
+      margin-right: 0;
+    }
+
+    .navigation__item--featured {
+      margin-top: 0;
+      margin-left: 0.5rem;
     }
 
     .navigation__link {
       font-size: 1rem;
+      padding: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
     }
+
+    /* Usunięcie efektu hover z podkreśleniem dla standardowych linków w wersji desktopowej */
+    .navigation__link:hover::after {
+      display: none;
+    }
+
+    /* Usunięcie linii pod aktywnym linkiem w wersji desktopowej */
+    .navigation__link[aria-current='page']::after {
+      display: none;
+    }
+
+    /* Usunięcie efektu hover dla nieaktywnych linków */
+    .navigation__link:not([aria-current='page'])::after {
+      display: none;
+    }
+
+    .navigation__link:not([aria-current='page']):hover::after {
+      display: none;
+    }
+
+    .navigation__link--featured {
+      padding: 0.3rem 0.8rem;
+      border-radius: 4px;
+      background-color: var(--primary);
+      color: white;
+      height: auto;
+      font-weight: 500;
+    }
+
+    /* Efekt hover dla wyróżnionych linków w wersji desktopowej */
+    .navigation__link--featured:hover {
+      background-color: var(--primary-light);
+    }
+
+    /* Aktywny wyróżniony link */
+    .navigation__link--featured[aria-current='page'] {
+      font-weight: 700;
+    }
+
   }
 </style>
 
@@ -196,14 +458,25 @@
   // Kod JavaScript do obsługi przycisku nawigacji
   document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.querySelector('.navigation__toggle')
+    const overlay = document.querySelector('.navigation__overlay')
 
-    if (toggleButton) {
+    if (toggleButton && overlay) {
       toggleButton.addEventListener('click', () => {
         const expanded = toggleButton.getAttribute('aria-expanded') === 'true'
         toggleButton.setAttribute('aria-expanded', (!expanded).toString())
 
+        // Przełącz klasę active dla overlay
+        overlay.classList.toggle('active', !expanded)
+
         // Opcjonalnie: zablokuj przewijanie strony, gdy menu jest otwarte
         document.body.style.overflow = !expanded ? 'hidden' : ''
+      })
+
+      // Zamknij menu po kliknięciu w overlay
+      overlay.addEventListener('click', () => {
+        toggleButton.setAttribute('aria-expanded', 'false')
+        overlay.classList.remove('active')
+        document.body.style.overflow = ''
       })
 
       // Zamknij menu po kliknięciu w link (na urządzeniach mobilnych)
@@ -212,6 +485,7 @@
         link.addEventListener('click', () => {
           if (window.innerWidth < 1024) {
             toggleButton.setAttribute('aria-expanded', 'false')
+            overlay.classList.remove('active')
             document.body.style.overflow = ''
           }
         })
@@ -221,6 +495,7 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && toggleButton.getAttribute('aria-expanded') === 'true') {
           toggleButton.setAttribute('aria-expanded', 'false')
+          overlay.classList.remove('active')
           document.body.style.overflow = ''
         }
       })
