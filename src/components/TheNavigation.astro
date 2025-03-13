@@ -1,5 +1,4 @@
 ---
-// Astro umożliwia definiowanie reaktywnych wartości na poziomie komponentu
 const { pathname } = Astro.url
 
 // Funkcja pomocnicza do sprawdzania, czy link jest aktywny
@@ -9,6 +8,18 @@ const isActive = (href: string) => {
   }
   return pathname.startsWith(href)
 }
+
+const standardLinks = [
+  { href: '/', text: 'Strona główna' },
+  { href: '/articles', text: 'Blog' },
+  { href: '/o-nas', text: 'O nas' },
+  { href: '/kontakt', text: 'Kontakt' },
+]
+
+const featuredLinks = [
+  { href: '/newsletter', text: 'Newsletter', class: 'newsletter-link' },
+  { href: '/kursy', text: 'Szkolenia', class: 'navigation__link--featured' },
+]
 ---
 
 <nav class="navigation global-padding">
@@ -20,51 +31,37 @@ const isActive = (href: string) => {
 
       <!-- Standardowe linki w wersji desktopowej -->
       <ul class="navigation__list navigation__list--standard navigation__list--desktop">
-        <li class="navigation__item">
-          <a href="/" class="navigation__link" aria-current={isActive('/') ? 'page' : undefined}
-            >Strona główna</a
-          >
-        </li>
-        <li class="navigation__item">
-          <a
-            href="/articles"
-            class="navigation__link"
-            aria-current={isActive('/articles') ? 'page' : undefined}>Blog</a
-          >
-        </li>
-        <li class="navigation__item">
-          <a
-            href="/o-nas"
-            class="navigation__link"
-            aria-current={isActive('/o-nas') ? 'page' : undefined}>O nas</a
-          >
-        </li>
-        <li class="navigation__item">
-          <a
-            href="/kontakt"
-            class="navigation__link"
-            aria-current={isActive('/kontakt') ? 'page' : undefined}>Kontakt</a
-          >
-        </li>
+        {
+          standardLinks.map((link) => (
+            <li class="navigation__item">
+              <a
+                href={link.href}
+                class="navigation__link"
+                aria-current={isActive(link.href) ? 'page' : undefined}
+              >
+                {link.text}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </div>
 
     <!-- Wyróżnione linki w wersji desktopowej -->
     <ul class="navigation__list navigation__list--featured navigation__list--desktop">
-      <li class="navigation__item navigation__item--featured">
-        <a
-          href="/newsletter"
-          class="navigation__link newsletter-link"
-          aria-current={isActive('/newsletter') ? 'page' : undefined}>Newsletter</a
-        >
-      </li>
-      <li class="navigation__item navigation__item--featured">
-        <a
-          href="/kursy"
-          class="navigation__link navigation__link--featured"
-          aria-current={isActive('/kursy') ? 'page' : undefined}>Szkolenia</a
-        >
-      </li>
+      {
+        featuredLinks.map((link) => (
+          <li class="navigation__item navigation__item--featured">
+            <a
+              href={link.href}
+              class={`navigation__link ${link.class}`}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.text}
+            </a>
+          </li>
+        ))
+      }
     </ul>
 
     <button
@@ -82,53 +79,38 @@ const isActive = (href: string) => {
       <div class="navigation__menu-content">
         <!-- Standardowe linki w wersji mobilnej -->
         <ul class="navigation__list navigation__list--standard">
-          <li class="navigation__item">
-            <a href="/" class="navigation__link" aria-current={isActive('/') ? 'page' : undefined}
-              >Strona główna</a
-            >
-          </li>
-          <li class="navigation__item">
-            <a
-              href="/blog"
-              class="navigation__link"
-              aria-current={isActive('/blog') ? 'page' : undefined}>Blog</a
-            >
-          </li>
-          <li class="navigation__item">
-            <a
-              href="/o-nas"
-              class="navigation__link"
-              aria-current={isActive('/o-nas') ? 'page' : undefined}>O nas</a
-            >
-          </li>
-          <li class="navigation__item">
-            <a
-              href="/kontakt"
-              class="navigation__link"
-              aria-current={isActive('/kontakt') ? 'page' : undefined}>Kontakt</a
-            >
-          </li>
+          {
+            standardLinks.map((link) => (
+              <li class="navigation__item">
+                <a
+                  href={link.href}
+                  class="navigation__link"
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                >
+                  {link.text}
+                </a>
+              </li>
+            ))
+          }
         </ul>
 
-        <!-- Separator wizualny przed wyróżnionymi linkami (tylko w wersji mobilnej) -->
         <div class="navigation__separator" aria-hidden="true"></div>
 
         <!-- Wyróżnione linki w wersji mobilnej -->
         <ul class="navigation__list navigation__list--featured">
-          <li class="navigation__item navigation__item--featured">
-            <a
-              href="/newsletter"
-              class="navigation__link navigation__link--featured"
-              aria-current={isActive('/newsletter') ? 'page' : undefined}>Newsletter</a
-            >
-          </li>
-          <li class="navigation__item navigation__item--featured">
-            <a
-              href="/kursy"
-              class="navigation__link navigation__link--featured"
-              aria-current={isActive('/kursy') ? 'page' : undefined}>Kursy</a
-            >
-          </li>
+          {
+            featuredLinks.map((link) => (
+              <li class="navigation__item navigation__item--featured">
+                <a
+                  href={link.href}
+                  class={`navigation__link navigation__link--featured`}
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                >
+                  {link.text}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
@@ -228,6 +210,7 @@ const isActive = (href: string) => {
     bottom: 0;
   }
 
+  /* Animacja przycisku nawigacji mobilnej */
   .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(1) {
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
@@ -450,7 +433,6 @@ const isActive = (href: string) => {
     .navigation__link--featured[aria-current='page'] {
       font-weight: 700;
     }
-
   }
 </style>
 
