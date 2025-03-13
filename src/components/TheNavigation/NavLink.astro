@@ -1,0 +1,118 @@
+---
+interface Props {
+  href: string
+  text: string
+  isActive: boolean
+  variant?: 'standard' | 'featured' | 'newsletter'
+}
+
+const { href, text, isActive, variant = 'standard' } = Astro.props
+
+const itemClass =
+  variant !== 'standard' ? 'navigation__item navigation__item--featured' : 'navigation__item'
+const linkClass = `navigation__link ${variant !== 'standard' ? `navigation__link--${variant}` : ''}`
+---
+
+<li class={itemClass}>
+  <a href={href} class={linkClass} aria-current={isActive ? 'page' : undefined}>
+    {text}
+  </a>
+</li>
+
+<style>
+  .navigation__item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }
+
+  .navigation__item:last-child {
+    margin-bottom: 0;
+  }
+
+  .navigation__item--featured {
+    margin-top: 0.25rem;
+  }
+
+  .navigation__link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.25rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .navigation__link:hover {
+    opacity: 0.8;
+  }
+
+  .navigation__link[aria-current='page'] {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .navigation__link--featured {
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    background-color: var(--primary);
+    color: white;
+    height: auto;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    position: relative;
+  }
+
+  .navigation__link--featured:hover {
+    background-color: var(--primary-light);
+    opacity: 1;
+  }
+
+  .navigation__link--featured[aria-current='page'] {
+    font-weight: 700;
+  }
+
+  .navigation__link--newsletter {
+    color: var(--primary);
+    font-weight: 600;
+    position: relative;
+  }
+
+  @media (min-width: 1024px) {
+    .navigation__item {
+      margin: 0 1rem 0 0;
+      justify-content: flex-start;
+    }
+
+    .navigation__item:last-child {
+      margin-right: 0;
+    }
+
+    .navigation__item--featured {
+      margin-top: 0;
+      margin-left: 0.5rem;
+    }
+
+    .navigation__link {
+      font-size: 1rem;
+      padding: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .navigation__link--featured {
+      height: auto;
+      padding: 0.3rem 0.8rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .navigation__link--featured:hover {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+  }
+</style>

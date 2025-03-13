@@ -1,13 +1,16 @@
 ---
+import NavLink from './TheNavigation/NavLink.astro'
+
 const { pathname } = Astro.url
 
-// Funkcja pomocnicza do sprawdzania, czy link jest aktywny
 const isActive = (href: string) => {
   if (href === '/') {
     return pathname === href
   }
   return pathname.startsWith(href)
 }
+
+type LinkVariant = 'standard' | 'featured' | 'newsletter'
 
 const standardLinks = [
   { href: '/', text: 'Strona główna' },
@@ -17,52 +20,45 @@ const standardLinks = [
 ]
 
 const featuredLinks = [
-  { href: '/newsletter', text: 'Newsletter', class: 'newsletter-link' },
-  { href: '/kursy', text: 'Szkolenia', class: 'navigation__link--featured' },
+  { href: '/newsletter', text: 'Newsletter', variant: 'newsletter' as LinkVariant },
+  { href: '/kursy', text: 'Szkolenia', variant: 'featured' as LinkVariant },
 ]
+
+const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile') || false
 ---
 
-<nav class="navigation global-padding">
+<nav class="navigation global-padding" aria-label="Główna nawigacja">
   <div class="navigation__container">
     <div class="navigation__left">
-      <a href="/" class="navigation__logo" aria-label="Strona główna">
+      <a href="/" class="navigation__logo" aria-label="Strona główna" rel="home">
         <span class="navigation__logo-text">CoffeeBlog</span>
       </a>
 
-      <!-- Standardowe linki w wersji desktopowej -->
-      <ul class="navigation__list navigation__list--standard navigation__list--desktop">
-        {
-          standardLinks.map((link) => (
-            <li class="navigation__item">
-              <a
-                href={link.href}
-                class="navigation__link"
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
-                {link.text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      {
+        !isMobileView && (
+          <ul class="navigation__list navigation__list--standard navigation__list--desktop">
+            {standardLinks.map((link) => (
+              <NavLink href={link.href} text={link.text} isActive={isActive(link.href)} />
+            ))}
+          </ul>
+        )
+      }
     </div>
 
-    <!-- Wyróżnione linki w wersji desktopowej -->
-    <ul class="navigation__list navigation__list--featured navigation__list--desktop">
-      {
-        featuredLinks.map((link) => (
-          <li class="navigation__item navigation__item--featured">
-            <a
+    {
+      !isMobileView && (
+        <ul class="navigation__list navigation__list--featured navigation__list--desktop">
+          {featuredLinks.map((link) => (
+            <NavLink
               href={link.href}
-              class={`navigation__link ${link.class}`}
-              aria-current={isActive(link.href) ? 'page' : undefined}
-            >
-              {link.text}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+              text={link.text}
+              isActive={isActive(link.href)}
+              variant={link.variant}
+            />
+          ))}
+        </ul>
+      )
+    }
 
     <button
       class="navigation__toggle"
@@ -77,38 +73,25 @@ const featuredLinks = [
 
     <div class="navigation__menu global-padding" id="navigation-menu">
       <div class="navigation__menu-content">
-        <!-- Standardowe linki w wersji mobilnej -->
         <ul class="navigation__list navigation__list--standard">
           {
             standardLinks.map((link) => (
-              <li class="navigation__item">
-                <a
-                  href={link.href}
-                  class="navigation__link"
-                  aria-current={isActive(link.href) ? 'page' : undefined}
-                >
-                  {link.text}
-                </a>
-              </li>
+              <NavLink href={link.href} text={link.text} isActive={isActive(link.href)} />
             ))
           }
         </ul>
 
         <div class="navigation__separator" aria-hidden="true"></div>
 
-        <!-- Wyróżnione linki w wersji mobilnej -->
         <ul class="navigation__list navigation__list--featured">
           {
             featuredLinks.map((link) => (
-              <li class="navigation__item navigation__item--featured">
-                <a
-                  href={link.href}
-                  class={`navigation__link navigation__link--featured`}
-                  aria-current={isActive(link.href) ? 'page' : undefined}
-                >
-                  {link.text}
-                </a>
-              </li>
+              <NavLink
+                href={link.href}
+                text={link.text}
+                isActive={isActive(link.href)}
+                variant={link.variant}
+              />
             ))
           }
         </ul>
@@ -160,6 +143,19 @@ const featuredLinks = [
     font-weight: bold;
     font-size: 1.25rem;
     white-space: nowrap;
+    height: auto;
+    width: auto;
+    display: inline-block;
+    contain: layout;
+  }
+
+  /* Listy nawigacyjne */
+  .navigation__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
   /* Ukrycie linków desktopowych w wersji mobilnej */
@@ -238,6 +234,8 @@ const featuredLinks = [
     transition: right 0.3s ease-in-out;
     overflow-y: auto;
     z-index: 100;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px; /* Przybliżona wysokość menu */
   }
 
   .navigation__menu-content {
@@ -268,77 +266,12 @@ const featuredLinks = [
     pointer-events: auto;
   }
 
-  .navigation__list {
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .navigation__item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 0.75rem;
-  }
-
-  .navigation__item:last-child {
-    margin-bottom: 0;
-  }
-
-  .navigation__link {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 0;
-    text-decoration: none;
-    color: #333;
-    font-size: 1.25rem;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    position: relative;
-  }
-
-  .navigation__link:hover {
-    opacity: 0.8;
-  }
-
-  .navigation__link[aria-current='page'] {
-    color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* Style dla wyróżnionych linków */
+  /* Separator */
   .navigation__separator {
     width: 100%;
     height: 1px;
     background-color: #e0e0e0;
     margin: 0.5rem 0 1rem;
-  }
-
-  .navigation__item--featured {
-    margin-top: 0.25rem;
-  }
-
-  .navigation__link--featured {
-    color: var(--primary);
-    position: relative;
-  }
-
-  /* Efekt hover dla wyróżnionych linków */
-  .navigation__link--featured:hover {
-    opacity: 0.8;
-  }
-
-  .newsletter-link {
-    color: var(--primary);
-    font-weight: 600;
-    position: relative;
-  }
-
-  /* Efekt hover dla linku newsletter */
-  .newsletter-link:hover {
-    opacity: 0.8;
   }
 
   /* Wersja dla desktop (powyżej 1023px) */
@@ -348,6 +281,10 @@ const featuredLinks = [
     }
 
     .navigation__menu {
+      display: none;
+    }
+
+    .navigation__overlay {
       display: none;
     }
 
@@ -369,75 +306,10 @@ const featuredLinks = [
     .navigation__list--standard.navigation__list--desktop {
       margin-left: 2rem;
     }
-
-    .navigation__overlay {
-      display: none;
-    }
-
-    .navigation__item {
-      margin: 0 1rem 0 0;
-      justify-content: flex-start;
-    }
-
-    .navigation__item:last-child {
-      margin-right: 0;
-    }
-
-    .navigation__item--featured {
-      margin-top: 0;
-      margin-left: 0.5rem;
-    }
-
-    .navigation__link {
-      font-size: 1rem;
-      padding: 0;
-      height: 64px;
-      display: flex;
-      align-items: center;
-    }
-
-    /* Usunięcie efektu hover z podkreśleniem dla standardowych linków w wersji desktopowej */
-    .navigation__link:hover::after {
-      display: none;
-    }
-
-    /* Usunięcie linii pod aktywnym linkiem w wersji desktopowej */
-    .navigation__link[aria-current='page']::after {
-      display: none;
-    }
-
-    /* Usunięcie efektu hover dla nieaktywnych linków */
-    .navigation__link:not([aria-current='page'])::after {
-      display: none;
-    }
-
-    .navigation__link:not([aria-current='page']):hover::after {
-      display: none;
-    }
-
-    .navigation__link--featured {
-      padding: 0.3rem 0.8rem;
-      border-radius: 4px;
-      background-color: var(--primary);
-      color: white;
-      height: auto;
-      font-weight: 500;
-    }
-
-    /* Efekt hover dla wyróżnionych linków w wersji desktopowej */
-    .navigation__link--featured:hover {
-      background-color: var(--primary-light);
-    }
-
-    /* Aktywny wyróżniony link */
-    .navigation__link--featured[aria-current='page'] {
-      font-weight: 700;
-    }
   }
 </style>
 
 <script>
-  // Kod JavaScript do obsługi przycisku nawigacji
   document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.querySelector('.navigation__toggle')
     const overlay = document.querySelector('.navigation__overlay')
@@ -447,21 +319,17 @@ const featuredLinks = [
         const expanded = toggleButton.getAttribute('aria-expanded') === 'true'
         toggleButton.setAttribute('aria-expanded', (!expanded).toString())
 
-        // Przełącz klasę active dla overlay
         overlay.classList.toggle('active', !expanded)
 
-        // Opcjonalnie: zablokuj przewijanie strony, gdy menu jest otwarte
         document.body.style.overflow = !expanded ? 'hidden' : ''
       })
 
-      // Zamknij menu po kliknięciu w overlay
       overlay.addEventListener('click', () => {
         toggleButton.setAttribute('aria-expanded', 'false')
         overlay.classList.remove('active')
         document.body.style.overflow = ''
       })
 
-      // Zamknij menu po kliknięciu w link (na urządzeniach mobilnych)
       const navLinks = document.querySelectorAll('.navigation__link')
       navLinks.forEach((link) => {
         link.addEventListener('click', () => {
@@ -473,7 +341,6 @@ const featuredLinks = [
         })
       })
 
-      // Obsługa klawisza Escape do zamykania menu
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && toggleButton.getAttribute('aria-expanded') === 'true') {
           toggleButton.setAttribute('aria-expanded', 'false')
