@@ -1,28 +1,8 @@
 ---
 import NavLink from './NavLink/NavLink.astro'
+import { standardLinks, featuredLinks, isLinkActive } from '../../data/navigation'
 
 const { pathname } = Astro.url
-
-const isActive = (href: string) => {
-  if (href === '/') {
-    return pathname === href
-  }
-  return pathname.startsWith(href)
-}
-
-type LinkVariant = 'standard' | 'featured' | 'newsletter'
-
-const standardLinks = [
-  { href: '/', text: 'Strona główna' },
-  { href: '/articles', text: 'Blog' },
-  { href: '/o-nas', text: 'O nas' },
-  { href: '/kontakt', text: 'Kontakt' },
-]
-
-const featuredLinks = [
-  { href: '/newsletter', text: 'Newsletter', variant: 'newsletter' as LinkVariant },
-  { href: '/kursy', text: 'Szkolenia', variant: 'featured' as LinkVariant },
-]
 
 const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile') || false
 ---
@@ -38,7 +18,11 @@ const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile')
         !isMobileView && (
           <ul class="navigation__list navigation__list--standard navigation__list--desktop">
             {standardLinks.map((link) => (
-              <NavLink href={link.href} text={link.text} isActive={isActive(link.href)} />
+              <NavLink
+                href={link.href}
+                text={link.text}
+                isActive={isLinkActive(link.href, pathname)}
+              />
             ))}
           </ul>
         )
@@ -52,7 +36,7 @@ const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile')
             <NavLink
               href={link.href}
               text={link.text}
-              isActive={isActive(link.href)}
+              isActive={isLinkActive(link.href, pathname)}
               variant={link.variant}
             />
           ))}
@@ -76,7 +60,11 @@ const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile')
         <ul class="navigation__list navigation__list--standard">
           {
             standardLinks.map((link) => (
-              <NavLink href={link.href} text={link.text} isActive={isActive(link.href)} />
+              <NavLink
+                href={link.href}
+                text={link.text}
+                isActive={isLinkActive(link.href, pathname)}
+              />
             ))
           }
         </ul>
@@ -89,7 +77,7 @@ const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile')
               <NavLink
                 href={link.href}
                 text={link.text}
-                isActive={isActive(link.href)}
+                isActive={isLinkActive(link.href, pathname)}
                 variant={link.variant}
               />
             ))
