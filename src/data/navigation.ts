@@ -1,59 +1,89 @@
-/**
- * Typy i dane związane z nawigacją
- * Ten plik zawiera dane, które są używane w różnych miejscach aplikacji,
- * takich jak główna nawigacja, footer, itp.
- */
 
-/**
- * Typ reprezentujący wariant linku nawigacyjnego
- */
 export type LinkVariant = 'standard' | 'featured' | 'newsletter'
 
-/**
- * Interfejs reprezentujący link nawigacyjny
- */
+export type FooterLinkCategory = 'pages' | 'resources' | 'contact' | 'legal'
+
 export interface NavigationLink {
-  /** URL linku */
   href: string
-
-  /** Tekst do wyświetlenia */
   text: string
-
-  /** Wariant linku (wpływa na wygląd) */
   variant?: LinkVariant
-
-  /** Czy link powinien być widoczny w stopce */
   showInFooter?: boolean
+  footerCategory?: FooterLinkCategory
 }
 
-/**
- * Standardowe linki nawigacyjne (strona główna, blog, itp.)
- */
 export const standardLinks: NavigationLink[] = [
-  { href: '/', text: 'Strona główna', showInFooter: true },
-  { href: '/articles', text: 'Blog', showInFooter: true },
-  { href: '/o-nas', text: 'O nas', showInFooter: true },
-  { href: '/kontakt', text: 'Kontakt', showInFooter: true },
+  { href: '/', text: 'Strona główna', showInFooter: true, footerCategory: 'pages' },
+  { href: '/articles', text: 'Blog', showInFooter: true, footerCategory: 'pages' },
+  { href: '/o-nas', text: 'O nas', showInFooter: true, footerCategory: 'pages' },
+  { href: '/kontakt', text: 'Kontakt', showInFooter: true, footerCategory: 'contact' },
 ]
 
-/**
- * Wyróżnione linki nawigacyjne (newsletter, szkolenia, itp.)
- */
 export const featuredLinks: NavigationLink[] = [
-  { href: '/newsletter', text: 'Newsletter', variant: 'newsletter', showInFooter: true },
-  { href: '/kursy', text: 'Szkolenia', variant: 'featured', showInFooter: false },
+  {
+    href: '/newsletter',
+    text: 'Newsletter',
+    variant: 'newsletter',
+    showInFooter: true,
+    footerCategory: 'resources',
+  },
+  {
+    href: '/kursy',
+    text: 'Szkolenia',
+    variant: 'featured',
+    showInFooter: true,
+    footerCategory: 'resources',
+  },
 ]
 
-/**
- * Wszystkie linki nawigacyjne (połączenie standardowych i wyróżnionych)
- */
-export const allLinks: NavigationLink[] = [...standardLinks, ...featuredLinks]
+export const footerOnlyLinks: NavigationLink[] = [
+  {
+    href: '/polityka-prywatnosci',
+    text: 'Polityka prywatności',
+    showInFooter: true,
+    footerCategory: 'legal',
+  },
+  { href: '/regulamin', text: 'Regulamin', showInFooter: true, footerCategory: 'legal' },
+  { href: '/cookies', text: 'Polityka cookies', showInFooter: true, footerCategory: 'legal' },
+  {
+    href: '/formularz-kontaktowy',
+    text: 'Formularz kontaktowy',
+    showInFooter: true,
+    footerCategory: 'contact',
+  },
+]
 
-/**
- * Pomocnicza funkcja do filtrowania linków, które powinny być widoczne w stopce
- */
+
+export const allLinks: NavigationLink[] = [...standardLinks, ...featuredLinks, ...footerOnlyLinks]
+
+export const footerCategoryTitles: Record<FooterLinkCategory, string> = {
+  pages: 'Strony',
+  resources: 'Zasoby',
+  contact: 'Kontakt',
+  legal: 'Informacje prawne',
+}
+
 export const getFooterLinks = (): NavigationLink[] => {
   return allLinks.filter((link) => link.showInFooter)
+}
+
+
+export const getFooterLinksByCategory = (): Record<FooterLinkCategory, NavigationLink[]> => {
+  const categories: Record<FooterLinkCategory, NavigationLink[]> = {
+    pages: [],
+    resources: [],
+    contact: [],
+    legal: [],
+  }
+
+  getFooterLinks().forEach((link) => {
+    if (link.footerCategory) {
+      categories[link.footerCategory].push(link)
+    }
+  })
+
+  return Object.fromEntries(
+    Object.entries(categories).filter(([_, links]) => links.length > 0),
+  ) as Record<FooterLinkCategory, NavigationLink[]>
 }
 
 /**

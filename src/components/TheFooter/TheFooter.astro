@@ -1,8 +1,9 @@
 ---
-import { getFooterLinks, isLinkActive } from '../../data/navigation'
+import { getFooterLinksByCategory, footerCategoryTitles } from '../../data/navigation'
+import FooterLinkColumn from './FooterLinkColumn.astro'
 
 const { pathname } = Astro.url
-const footerLinks = getFooterLinks()
+const footerLinksByCategory = getFooterLinksByCategory()
 const currentYear = new Date().getFullYear()
 ---
 
@@ -16,24 +17,17 @@ const currentYear = new Date().getFullYear()
     </div>
 
     <div class="footer__right">
-      <nav class="footer__nav" aria-label="Nawigacja w stopce">
-        <ul class="footer__nav-list">
-          <li class="footer__nav-item">Strony</li>
-          {
-            footerLinks.map((link) => (
-              <li class="footer__nav-item">
-                <a
-                  href={link.href}
-                  class="footer__nav-link"
-                  aria-current={isLinkActive(link.href, pathname) ? 'page' : undefined}
-                >
-                  {link.text}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+      <div class="footer__columns">
+        {
+          Object.entries(footerLinksByCategory).map(([category, links]) => (
+            <FooterLinkColumn
+              title={footerCategoryTitles[category as keyof typeof footerCategoryTitles]}
+              links={links}
+              pathname={pathname}
+            />
+          ))
+        }
+      </div>
     </div>
   </div>
 
@@ -101,28 +95,18 @@ const currentYear = new Date().getFullYear()
     margin: 0;
   }
 
-  .footer__nav-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .footer__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .footer__columns {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem 2rem;
-  }
-
-  .footer__nav-link {
-    color: #333;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .footer__nav-link:hover {
-    color: var(--primary);
-  }
-
-  .footer__nav-link[aria-current='page'] {
-    color: var(--primary);
-    font-weight: 600;
+    justify-content: flex-end;
+    gap: 2rem 3rem;
+    width: 100%;
   }
 
   .footer__bottom {
@@ -170,10 +154,30 @@ const currentYear = new Date().getFullYear()
     .footer__container {
       flex-direction: row;
       justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .footer__left {
+      max-width: 300px;
+    }
+
+    .footer__right {
+      flex: 1;
+      margin-left: 2rem;
+    }
+
+    .footer__columns {
+      justify-content: flex-end;
     }
 
     .footer__bottom {
       flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .footer__columns {
       justify-content: space-between;
     }
   }
