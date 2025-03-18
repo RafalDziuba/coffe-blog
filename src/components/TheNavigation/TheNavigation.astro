@@ -1,0 +1,353 @@
+---
+import NavLink from './NavLink/NavLink.astro'
+
+const { pathname } = Astro.url
+
+const isActive = (href: string) => {
+  if (href === '/') {
+    return pathname === href
+  }
+  return pathname.startsWith(href)
+}
+
+type LinkVariant = 'standard' | 'featured' | 'newsletter'
+
+const standardLinks = [
+  { href: '/', text: 'Strona główna' },
+  { href: '/articles', text: 'Blog' },
+  { href: '/o-nas', text: 'O nas' },
+  { href: '/kontakt', text: 'Kontakt' },
+]
+
+const featuredLinks = [
+  { href: '/newsletter', text: 'Newsletter', variant: 'newsletter' as LinkVariant },
+  { href: '/kursy', text: 'Szkolenia', variant: 'featured' as LinkVariant },
+]
+
+const isMobileView = Astro.request.headers.get('user-agent')?.includes('Mobile') || false
+---
+
+<nav class="navigation global-padding" aria-label="Główna nawigacja">
+  <div class="navigation__container">
+    <div class="navigation__left">
+      <a href="/" class="navigation__logo" aria-label="Strona główna" rel="home">
+        <span class="navigation__logo-text">CoffeeBlog</span>
+      </a>
+
+      {
+        !isMobileView && (
+          <ul class="navigation__list navigation__list--standard navigation__list--desktop">
+            {standardLinks.map((link) => (
+              <NavLink href={link.href} text={link.text} isActive={isActive(link.href)} />
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    {
+      !isMobileView && (
+        <ul class="navigation__list navigation__list--featured navigation__list--desktop">
+          {featuredLinks.map((link) => (
+            <NavLink
+              href={link.href}
+              text={link.text}
+              isActive={isActive(link.href)}
+              variant={link.variant}
+            />
+          ))}
+        </ul>
+      )
+    }
+
+    <button
+      class="navigation__toggle"
+      aria-label="Otwórz menu nawigacyjne"
+      aria-expanded="false"
+      aria-controls="navigation-menu"
+    >
+      <span class="navigation__toggle-bar"></span>
+      <span class="navigation__toggle-bar"></span>
+      <span class="navigation__toggle-bar"></span>
+    </button>
+
+    <div class="navigation__menu global-padding" id="navigation-menu">
+      <div class="navigation__menu-content">
+        <ul class="navigation__list navigation__list--standard">
+          {
+            standardLinks.map((link) => (
+              <NavLink href={link.href} text={link.text} isActive={isActive(link.href)} />
+            ))
+          }
+        </ul>
+
+        <div class="navigation__separator" aria-hidden="true"></div>
+
+        <ul class="navigation__list navigation__list--featured">
+          {
+            featuredLinks.map((link) => (
+              <NavLink
+                href={link.href}
+                text={link.text}
+                isActive={isActive(link.href)}
+                variant={link.variant}
+              />
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="navigation__overlay"></div>
+
+<style>
+  .navigation {
+    position: relative;
+    width: 100%;
+    z-index: 99;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 64px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .navigation__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .navigation__left {
+    display: flex;
+    align-items: center;
+  }
+
+  .navigation__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    z-index: 101;
+    transition: opacity 0.2s ease;
+  }
+
+  .navigation__logo:hover {
+    opacity: 0.8;
+  }
+
+  .navigation__logo-text {
+    font-weight: bold;
+    font-size: 1.25rem;
+    white-space: nowrap;
+    height: auto;
+    width: auto;
+    display: inline-block;
+    contain: layout;
+  }
+
+  /* Listy nawigacyjne */
+  .navigation__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Ukrycie linków desktopowych w wersji mobilnej */
+  .navigation__list--desktop {
+    display: none !important;
+    visibility: hidden;
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .navigation__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 2rem;
+    height: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+    position: relative;
+  }
+
+  .navigation__toggle-bar {
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+    left: 0;
+  }
+
+  .navigation__toggle-bar:nth-child(1) {
+    top: 0;
+  }
+
+  .navigation__toggle-bar:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .navigation__toggle-bar:nth-child(3) {
+    bottom: 0;
+  }
+
+  /* Animacja przycisku nawigacji mobilnej */
+  .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(3) {
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+  }
+
+  .navigation__menu {
+    position: fixed;
+    top: 64px; /* Wysokość nawigacji */
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    height: calc(100vh - 64px); /* Wysokość ekranu minus wysokość nawigacji */
+    background-color: white;
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 100;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px; /* Przybliżona wysokość menu */
+  }
+
+  .navigation__menu-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .navigation__toggle[aria-expanded='true'] ~ .navigation__menu {
+    right: 0;
+  }
+
+  .navigation__overlay {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 64px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 98;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .navigation__overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Separator */
+  .navigation__separator {
+    width: 100%;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 0.5rem 0 1rem;
+  }
+
+  /* Wersja dla desktop (powyżej 1023px) */
+  @media (min-width: 1024px) {
+    .navigation__toggle {
+      display: none;
+    }
+
+    .navigation__menu {
+      display: none;
+    }
+
+    .navigation__overlay {
+      display: none;
+    }
+
+    /* Pokazanie linków desktopowych w wersji desktopowej */
+    .navigation__list--desktop {
+      display: flex !important;
+      visibility: visible;
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+      clip-path: none;
+      white-space: nowrap;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .navigation__list--standard.navigation__list--desktop {
+      margin-left: 2rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.querySelector('.navigation__toggle')
+    const overlay = document.querySelector('.navigation__overlay')
+
+    if (toggleButton && overlay) {
+      toggleButton.addEventListener('click', () => {
+        const expanded = toggleButton.getAttribute('aria-expanded') === 'true'
+        toggleButton.setAttribute('aria-expanded', (!expanded).toString())
+
+        overlay.classList.toggle('active', !expanded)
+
+        document.body.style.overflow = !expanded ? 'hidden' : ''
+      })
+
+      overlay.addEventListener('click', () => {
+        toggleButton.setAttribute('aria-expanded', 'false')
+        overlay.classList.remove('active')
+        document.body.style.overflow = ''
+      })
+
+      const navLinks = document.querySelectorAll('.navigation__link')
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth < 1024) {
+            toggleButton.setAttribute('aria-expanded', 'false')
+            overlay.classList.remove('active')
+            document.body.style.overflow = ''
+          }
+        })
+      })
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && toggleButton.getAttribute('aria-expanded') === 'true') {
+          toggleButton.setAttribute('aria-expanded', 'false')
+          overlay.classList.remove('active')
+          document.body.style.overflow = ''
+        }
+      })
+    }
+  })
+</script>

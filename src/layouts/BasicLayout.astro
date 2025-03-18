@@ -1,0 +1,29 @@
+---
+import TheNavigation from "../components/TheNavigation/TheNavigation.astro";
+import "../styles/global.css";
+
+import type { Props } from '../types/basicLayoutTypes'
+
+const { title, description }: Props = Astro.props
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <TheNavigation />
+    <slot name="header" />
+    <main class="main-content global-padding">
+      <slot />
+    </main>
+    <slot name="newsletter" />
+  </body>
+</html>
+

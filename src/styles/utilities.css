@@ -1,0 +1,15 @@
+.global-padding {
+  padding: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .global-padding {
+    padding: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .global-padding {
+    padding: 4.5rem 6rem;
+  }
+}

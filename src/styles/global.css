@@ -1,1 +1,15 @@
-@import "tailwindcss";
+@import './reset.css';
+@import './utilities.css';
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+
+:root {
+  --primary: #032e15;
+  --primary-light: #034d26;
+  --primary-accent: rgb(188, 240, 218);
+  --secondary: #460809;
+}
+
+body {
+  font-family: 'Funnel Sans', sans-serif;
+}
+

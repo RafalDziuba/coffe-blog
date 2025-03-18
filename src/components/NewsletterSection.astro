@@ -1,0 +1,62 @@
+<section class="newsletter-section global-padding">
+  <h2 class="newsletter-heading">Get the best sent to your inbox, every month</h2>
+
+  <form class="newsletter-form">
+    <input
+      class="newsletter-input"
+      placeholder="Podaj swój email"
+      type="text"
+      name="email"
+      id="email"
+    />
+    <button class="newsletter-button">Subskrybuj</button>
+  </form>
+
+  <p class="newsletter-subtext">subtekst</p>
+</section>
+
+<style>
+  .newsletter-section {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: var(--primary);
+    width: 100%;
+    color: white;
+  }
+
+  .newsletter-heading {
+    color: white;
+    text-align: center;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .newsletter-input {
+    height: 3rem;
+    padding: 0.5rem 1.25rem;
+    background-color: white;
+    border-radius: 0.25rem;
+    color: rgb(156, 163, 175); /* text-gray-400 */
+  }
+
+  .newsletter-button {
+    height: 3rem;
+    background-color: var(--primary-accent);
+    color: var(--primary);
+    border-radius: 0.25rem;
+  }
+
+  .newsletter-subtext {
+    text-align: center;
+    font-size: 0.75rem;
+    font-family: var(--font-primary);
+  }
+</style>
