@@ -1,0 +1,36 @@
+---
+import dividerImage from '../../assets/divider.webp'
+---
+
+<header class="global-padding">
+  <h1>zakawieni</h1>
+  <p>Łączymy ludzi, których pasją jest kawa.</p>
+
+  <div class="divider-container">
+    <img
+      src={dividerImage.src}
+      alt=""
+      width={dividerImage.width}
+      height={dividerImage.height}
+      class="divider-image"
+      aria-hidden="true"
+    />
+  </div>
+</header>
+
+<style>
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .divider-container {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+</style>

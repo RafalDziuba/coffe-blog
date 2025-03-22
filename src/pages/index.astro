@@ -1,8 +1,10 @@
 ---
 import BasicLayout from '../layouts/BasicLayout.astro';
 import NewsletterSection from "../components/NewsletterSection.astro";
+import HeroSection from '../components/HeroSection/HeroSection.astro';
 ---
 
 <BasicLayout title='Blog o kawie' description='desc'>
+	<HeroSection slot="header" />
 	<NewsletterSection slot="newsletter" />
 </BasicLayout>
