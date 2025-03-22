@@ -1,0 +1,97 @@
+---
+/**
+ * Komponent kolumny linków w stopce
+ * Wyświetla tytuł kategorii i listę linków należących do tej kategorii
+ */
+import type { NavigationLink } from '../../data/navigation'
+import { isLinkActive } from '../../data/navigation'
+
+interface Props {
+  /**
+   * Tytuł kolumny (kategorii)
+   */
+  title: string
+
+  /**
+   * Lista linków do wyświetlenia w kolumnie
+   */
+  links: NavigationLink[]
+
+  /**
+   * Bieżąca ścieżka URL (do określania aktywnego linku)
+   */
+  pathname: string
+}
+
+const { title, links, pathname } = Astro.props
+---
+
+<div class="footer-column">
+  <h3 class="footer-column__title">{title}</h3>
+  <ul class="footer-column__list">
+    {
+      links.map((link) => (
+        <li class="footer-column__item">
+          <a
+            href={link.href}
+            class="footer-column__link"
+            aria-current={isLinkActive(link.href, pathname) ? 'page' : undefined}
+          >
+            {link.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .footer-column {
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-column__title {
+    color: #999;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .footer-column__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-column__item {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-column__item:last-child {
+    margin-bottom: 0;
+  }
+
+  .footer-column__link {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-size: 0.95rem;
+  }
+
+  .footer-column__link:hover {
+    color: var(--primary);
+  }
+
+  .footer-column__link[aria-current='page'] {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    .footer-column {
+      margin-bottom: 0;
+    }
+  }
+</style>
