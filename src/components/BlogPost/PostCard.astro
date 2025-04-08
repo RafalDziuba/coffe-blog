@@ -1,0 +1,65 @@
+<article class="post-card">
+  <div class="post-card__image"></div>
+  <div class="post-card__content">
+    <h2 class="post-card__title"></h2>
+    <p class="post-card__description"></p>
+    <div class="post-card__tags"></div>
+    <div class="post-card__meta">
+      <span class="post-card__date"></span>
+      <span class="post-card__author"></span>
+      <span class="post-card__read-time"></span>
+    </div>
+  </div>
+</article>
+
+<style>
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .post-card__image {
+    width: 100%;
+    height: 200px;
+    background-color: #eaeaea;
+    background-image: url('/path/to/image.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .post-card__content {
+    padding: 16px;
+  }
+
+  .post-card__title {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .post-card__description {
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+
+  .post-card__tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .post-card__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #666;
+  }
+</style>
