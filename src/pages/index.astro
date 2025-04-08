@@ -2,9 +2,20 @@
 import BasicLayout from '../layouts/BasicLayout.astro';
 import NewsletterSection from "../components/NewsletterSection.astro";
 import HeroSection from '../components/HeroSection/HeroSection.astro';
+import CardsWrapper from '../components/BlogPost/CardsWrapper.astro';
 ---
 
 <BasicLayout title='Blog o kawie' description='desc'>
 	<HeroSection slot="header" />
 	<NewsletterSection slot="newsletter" />
+	<CardsWrapper 
+	heading="Wyróżnione artykuły" 
+	showOnlyFeatured={true} 
+  />
+  
+  <!-- Najnowsze posty -->
+  <CardsWrapper 
+	heading="Najnowsze artykuły" 
+	maxPosts={6}
+  />
 </BasicLayout>

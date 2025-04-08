@@ -1,0 +1,120 @@
+---
+// filepath: d:\Programowanie\Projekty\coffee-blog\src\components\BlogPost\CardsWrapper.astro
+import PostCard from './PostCard.astro';
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
+
+// Definiowanie typów
+type Post = CollectionEntry<'posts'>;
+
+// Konfiguracja komponentu
+interface Props {
+  heading?: string;
+  maxPosts?: number;
+  showOnlyFeatured?: boolean;
+}
+
+const { heading = "Artykuły", maxPosts, showOnlyFeatured = false } = Astro.props;
+
+// Pobierz wszystkie posty
+const allPosts = await getCollection('posts');
+
+// Sortowanie postów od najnowszych
+const sortedPosts = allPosts.sort((a: Post, b: Post) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+
+// Wyodrębnianie postów wyróżnionych i standardowych
+const featuredPosts = sortedPosts.filter((post: Post) => post.data.featured);
+const standardPosts = sortedPosts.filter((post: Post) => !post.data.featured);
+
+// Przygotowanie listy postów do wyświetlenia
+let postsToShow: Post[] = [];
+
+if (showOnlyFeatured) {
+  // Tylko posty wyróżnione
+  postsToShow = maxPosts ? featuredPosts.slice(0, maxPosts) : featuredPosts;
+} else {
+  // Najpierw wyróżnione, potem standardowe
+  postsToShow = [
+    ...featuredPosts,
+    ...standardPosts
+  ];
+  
+  // Ograniczenie liczby postów jeśli określono maxPosts
+  if (maxPosts) {
+    postsToShow = postsToShow.slice(0, maxPosts);
+  }
+}
+
+// ID dla dostępności
+const headingId = `heading-${Math.random().toString(36).substring(2, 9)}`;
+---
+
+<section class="articles-collection" aria-labelledby={headingId}>
+  <h2 
+    id={headingId} 
+    class={`articles-collection__heading ${heading === 'Artykuły' ? 'visually-hidden' : ''}`}
+  >
+    {heading}
+  </h2>
+  
+  <div class="articles-collection__grid">
+    {postsToShow.map(async (post) => {
+      // Dynamically import the image - this requires the images to be in src/assets
+      const imagePath = `/src/assets/posts/${post.data.slug}/cover.jpg`;
+      
+      return (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          publishDate={post.data.publishDate}
+          author={post.data.author}
+          image={imagePath}
+          tags={post.data.tags}
+          readTime={post.data.readTime}
+          slug={post.data.slug}
+          featured={post.data.featured}
+        />
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .articles-collection {
+    margin: 2rem 0;
+  }
+
+  .articles-collection__heading {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--heading-color, #333);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .articles-collection__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  @media (min-width: 768px) {
+    .articles-collection__grid {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+  }
+</style>
