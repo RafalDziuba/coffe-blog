@@ -1,91 +1,91 @@
 ---
 // filepath: d:\Programowanie\Projekty\coffee-blog\src\components\BlogPost\CardsWrapper.astro
-import PostCard from './PostCard.astro';
-import { getCollection } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
-import { getImage } from 'astro:assets';
+import PostCard from './PostCard.astro'
+import { getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+import { getImage } from 'astro:assets'
 
 // Definiowanie typów
-type Post = CollectionEntry<'posts'>;
+type Post = CollectionEntry<'posts'>
 
 // Konfiguracja komponentu
 interface Props {
-  heading?: string;
-  maxPosts?: number;
-  showOnlyFeatured?: boolean;
+  heading?: string
+  maxPosts?: number
+  showOnlyFeatured?: boolean
 }
 
-const { heading = "Artykuły", maxPosts, showOnlyFeatured = false } = Astro.props;
+const { heading, maxPosts, showOnlyFeatured = false } = Astro.props
 
 // Pobierz wszystkie posty
-const allPosts = await getCollection('posts');
+const allPosts = await getCollection('posts')
 
 // Sortowanie postów od najnowszych
-const sortedPosts = allPosts.sort((a: Post, b: Post) => 
-  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
-);
+const sortedPosts = allPosts.sort(
+  (a: Post, b: Post) =>
+    new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime(),
+)
 
 // Wyodrębnianie postów wyróżnionych i standardowych
-const featuredPosts = sortedPosts.filter((post: Post) => post.data.featured);
-const standardPosts = sortedPosts.filter((post: Post) => !post.data.featured);
+const featuredPosts = sortedPosts.filter((post: Post) => post.data.featured)
+const standardPosts = sortedPosts.filter((post: Post) => !post.data.featured)
 
 // Przygotowanie listy postów do wyświetlenia
-let postsToShow: Post[] = [];
+let postsToShow: Post[] = []
 
 if (showOnlyFeatured) {
   // Tylko posty wyróżnione
-  postsToShow = maxPosts ? featuredPosts.slice(0, maxPosts) : featuredPosts;
+  postsToShow = maxPosts ? featuredPosts.slice(0, maxPosts) : featuredPosts
 } else {
   // Najpierw wyróżnione, potem standardowe
-  postsToShow = [
-    ...featuredPosts,
-    ...standardPosts
-  ];
-  
+  postsToShow = [...featuredPosts, ...standardPosts]
+
   // Ograniczenie liczby postów jeśli określono maxPosts
   if (maxPosts) {
-    postsToShow = postsToShow.slice(0, maxPosts);
+    postsToShow = postsToShow.slice(0, maxPosts)
   }
 }
 
 // ID dla dostępności
-const headingId = `heading-${Math.random().toString(36).substring(2, 9)}`;
+const headingId = `heading-${Math.random().toString(36).substring(2, 9)}`
 ---
 
-<section class="articles-collection" aria-labelledby={headingId}>
-  <h2 
-    id={headingId} 
+<section class={`cards-wrapper`}>
+  <h2
+    id={headingId}
     class={`articles-collection__heading ${heading === 'Artykuły' ? 'visually-hidden' : ''}`}
   >
     {heading}
   </h2>
-  
+
   <div class="articles-collection__grid">
-    {postsToShow.map(async (post) => {
-      // Dynamically import the image - this requires the images to be in src/assets
-      const imagePath = `/src/assets/posts/${post.data.slug}/cover.jpg`;
-      
-      return (
-        <PostCard
-          title={post.data.title}
-          description={post.data.description}
-          publishDate={post.data.publishDate}
-          author={post.data.author}
-          image={imagePath}
-          tags={post.data.tags}
-          readTime={post.data.readTime}
-          slug={post.data.slug}
-          featured={post.data.featured}
-        />
-      );
-    })}
+    {
+      postsToShow.map(async (post) => {
+        // Dynamically import the image - this requires the images to be in src/assets
+        const imagePath = `/src/assets/posts/${post.data.slug}/cover.jpg`
+
+        return (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            publishDate={post.data.publishDate}
+            author={post.data.author}
+            image={imagePath}
+            tags={post.data.tags}
+            readTime={post.data.readTime}
+            slug={post.data.slug}
+            featured={post.data.featured}
+          />
+        )
+      })
+    }
   </div>
 </section>
 
 <style>
-  .articles-collection {
-    margin: 2rem 0;
+  .cards-wrapper {
+    margin-bottom: 2rem;
   }
 
   .articles-collection__heading {
