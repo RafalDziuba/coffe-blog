@@ -63,7 +63,7 @@ const headingId = `heading-${Math.random().toString(36).substring(2, 9)}`
     {
       postsToShow.map(async (post) => {
         // Dynamically import the image - this requires the images to be in src/assets
-        const imagePath = `/src/assets/posts/${post.data.slug}/cover.jpg`
+        const imagePath = `/src/assets/posts/${post.slug}/cover.jpg`
 
         return (
           <PostCard
@@ -74,7 +74,7 @@ const headingId = `heading-${Math.random().toString(36).substring(2, 9)}`
             image={imagePath}
             tags={post.data.tags}
             readTime={post.data.readTime}
-            slug={post.data.slug}
+            slug={post.slug}
             featured={post.data.featured}
           />
         )

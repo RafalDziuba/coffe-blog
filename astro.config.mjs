@@ -7,6 +7,7 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   vite: {
   },
+  site: 'http://localhost:4321',
 
   integrations: [mdx()]
 });

@@ -1,0 +1,358 @@
+---
+import '../styles/global.css'
+import TheNavigation from '../components/TheNavigation/TheNavigation.astro'
+import TheFooter from '../components/TheFooter/TheFooter.astro'
+
+interface Props {
+  title: string
+  description: string
+  publishDate: string
+  updatedDate?: string
+  author: string
+  image: string
+  tags: string[]
+  canonicalURL?: string
+  readTime: string
+}
+
+const {
+  title,
+  description,
+  publishDate,
+  updatedDate,
+  author,
+  image,
+  tags = [],
+  readTime,
+  canonicalURL = Astro.url.href,
+} = Astro.props
+
+// Format daty dla schema.org
+const isoPublishDate = new Date(publishDate).toISOString()
+const isoUpdatedDate = updatedDate ? new Date(updatedDate).toISOString() : isoPublishDate
+
+// Format daty do wyświetlenia
+const formattedPublishDate = new Date(publishDate).toLocaleDateString('pl-PL', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})
+
+const formattedUpdatedDate = updatedDate
+  ? new Date(updatedDate).toLocaleDateString('pl-PL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null
+
+// Przygotowanie danych dla Schema.org
+const schemaData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: description,
+  image: new URL(image, Astro.site).toString(),
+  author: {
+    '@type': 'Person',
+    name: author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'CoffeeBlog',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/images/logo.png', Astro.site).toString(),
+    },
+  },
+  datePublished: isoPublishDate,
+  dateModified: isoUpdatedDate,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalURL,
+  },
+  keywords: tags.join(', '),
+}
+
+// Generowanie dynamicznego opisu Open Graph
+const ogDescription =
+  description || `Przeczytaj artykuł "${title}" na CoffeeBlog i dowiedz się więcej o kawie`
+
+// Generowanie tagu dla Twitter Cards
+const twitterCardType = image ? 'summary_large_image' : 'summary'
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Podstawowe meta tagi -->
+    <title>{title} | CoffeeBlog</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Canonical URL - zapobiega problemom z duplikacją treści -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Meta tagi dla wyszukiwarek -->
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content={tags.join(', ')} />
+
+    <!-- Open Graph dla mediów społecznościowych -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:site_name" content="CoffeeBlog" />
+    <meta property="article:published_time" content={isoPublishDate} />
+    {updatedDate && <meta property="article:modified_time" content={isoUpdatedDate} />}
+    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content={twitterCardType} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image, Astro.site)} />
+
+    <!-- Struktura danych Schema.org dla artykułu -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
+    <!-- Czas czytania dla usług wyszukiwania -->
+    <meta property="article:read_time" content={readTime.replace(/\D/g, '')} />
+
+    <!-- Favikony -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Preload głównych zasobów dla lepszej wydajności -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Style -->
+    <slot name="head" />
+  </head>
+  <body>
+    <TheNavigation />
+
+    <main>
+      <article class="article">
+        <header class="article__header">
+          <div class="article__meta">
+            <time datetime={isoPublishDate} class="article__date">
+              Opublikowano: {formattedPublishDate}
+            </time>
+
+            {
+              formattedUpdatedDate && (
+                <time datetime={isoUpdatedDate} class="article__updated-date">
+                  Zaktualizowano: {formattedUpdatedDate}
+                </time>
+              )
+            }
+
+            <span class="article__author">Autor: {author}</span>
+            <span class="article__read-time">Czas czytania: {readTime}</span>
+          </div>
+
+          <h1 class="article__title">{title}</h1>
+
+          <div class="article__tags">
+            {
+              tags.map((tag) => (
+                <a href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`} class="article__tag">
+                  {tag}
+                </a>
+              ))
+            }
+          </div>
+
+          <div class="article__featured-image">
+            <img
+              src={image}
+              alt={`Zdjęcie do artykułu: ${title}`}
+              width="1200"
+              height="630"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        </header>
+
+        <div class="article__content">
+          <slot />
+        </div>
+
+        <footer class="article__footer">
+          <div class="article__share">
+            <h2>Udostępnij:</h2>
+            <div class="article__share-buttons">
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalURL)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Udostępnij na Facebook"
+                class="article__share-button article__share-button--facebook"
+              >
+                Facebook
+              </a>
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(canonicalURL)}&text=${encodeURIComponent(title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Udostępnij na Twitter"
+                class="article__share-button article__share-button--twitter"
+              >
+                Twitter
+              </a>
+            </div>
+          </div>
+        </footer>
+      </article>
+
+      <aside class="article__related">
+        <slot name="related" />
+      </aside>
+    </main>
+
+    <TheFooter />
+  </body>
+</html>
+
+<style>
+  .article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .article__header {
+    margin-bottom: 2rem;
+  }
+
+  .article__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  .article__title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    color: var(--primary, #5a7d2a);
+  }
+
+  .article__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .article__tag {
+    background-color: #f0f0f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #666;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .article__tag:hover {
+    background-color: #e0e0e0;
+  }
+
+  .article__featured-image {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .article__featured-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  .article__content {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+  }
+
+  .article__footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+  }
+
+  .article__share {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .article__share h2 {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .article__share-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .article__share-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .article__share-button:hover {
+    opacity: 0.9;
+  }
+
+  .article__share-button--facebook {
+    background-color: #1877f2;
+    color: white;
+  }
+
+  .article__share-button--twitter {
+    background-color: #1da1f2;
+    color: white;
+  }
+
+  .article__related {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .article {
+      padding: 3rem 2rem;
+    }
+
+    .article__title {
+      font-size: 3rem;
+    }
+  }
+</style>
