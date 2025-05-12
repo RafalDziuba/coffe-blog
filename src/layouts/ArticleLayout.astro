@@ -225,7 +225,7 @@ const twitterCardType = image ? 'summary_large_image' : 'summary'
   </body>
 </html>
 
-<style>
+<style is:global>
   .article {
     max-width: 800px;
     margin: 0 auto;
@@ -291,6 +291,11 @@ const twitterCardType = image ? 'summary_large_image' : 'summary'
     font-size: 1.1rem;
     line-height: 1.7;
     color: #333;
+  }
+
+  .article__content h2 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
   }
 
   .article__footer {
