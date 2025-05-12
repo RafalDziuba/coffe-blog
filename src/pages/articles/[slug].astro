@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content'
+import ArticleLayout from '../../layouts/ArticleLayout.astro'
+
+// Generuj statyczne strony dla wszystkich postów
+export async function getStaticPaths() {
+  const posts = await getCollection('posts')
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }))
+}
+
+// Pobierz dane posta na podstawie propsa
+import type { CollectionEntry } from 'astro:content'
+
+const { post } = Astro.props as { post: CollectionEntry<'posts'> }
+const { Content } = await post.render()
+---
+
+<ArticleLayout
+  title={post.data.title}
+  description={post.data.description}
+  publishDate={post.data.publishDate}
+  updatedDate={post.data.updatedDate}
+  author={post.data.author}
+  image={post.data.image}
+  tags={post.data.tags}
+  readTime={post.data.readTime}
+>
+  <Content />
+
+  <div slot="related">
+    <!-- Tutaj możesz dodać komponent z powiązanymi artykułami -->
+  </div>
+</ArticleLayout>
