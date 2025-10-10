@@ -1,9 +1,164 @@
 ---
-import BasicLayout from '../layouts/BasicLayout.astro';
+import BasicLayout from '../layouts/BasicLayout.astro'
+import { getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+import PostCard from '../components/BlogPost/PostCard.astro'
+import SortingSelect from '../components/BlogPost/SortingSelect.astro'
+import Pagination from '../components/BlogPost/Pagination.astro'
+
+// Definiowanie typów
+type Post = CollectionEntry<'posts'>
+
+// Pobierz parametry z URL
+const sort = Astro.url.searchParams.get('sort')
+console.log('Current sort value from URL:', sort)
+const page = Astro.url.searchParams.get('page') || '1'
+const currentPage = parseInt(page) || 1
+const postsPerPage = 8
+
+// Pobierz wszystkie posty
+const allPosts = await getCollection('posts')
+
+// Sortowanie postów według wybranej opcji
+let sortedPosts: Post[] = [...allPosts];
+switch (sort) {
+  case 'oldest':
+    sortedPosts = allPosts.sort(
+      (a, b) => new Date(a.data.publishDate).getTime() - new Date(b.data.publishDate).getTime(),
+    )
+    break
+  case 'newest':
+  default:
+    sortedPosts = allPosts.sort(
+      (a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime(),
+    )
+    break
+}
+
+// Oblicz całkowitą liczbę stron
+const totalPosts = sortedPosts.length
+const totalPages = Math.ceil(totalPosts / postsPerPage)
+
+// Pobierz aktualną stronę postów
+const currentPagePosts = sortedPosts.slice(
+  (currentPage - 1) * postsPerPage,
+  currentPage * postsPerPage,
+)
+
+// Upewnij się, że nie próbujemy wyświetlić pustej strony
+if (currentPage > totalPages && totalPosts > 0) {
+  return Astro.redirect('/articles')
+}
 ---
 
-<BasicLayout title='Blog o kawie' description='desc'>
-    <section>
-        articles
+<BasicLayout
+  title="Wszystkie artykuły | Blog o kawie"
+  description="Przeczytaj nasze artykuły o kawie, metodach parzenia, sprzęcie i więcej."
+>
+  <div class="articles-container">
+    <header class="articles-header">
+      <h1 class="articles-title">Wszystkie artykuły</h1>
+      <p class="articles-description">
+        Odkryj świat kawy poprzez nasze artykuły. Od podstawowych poradników po zaawansowane
+        techniki.
+      </p>
+
+      <div class="articles-sorting">
+        <SortingSelect sortOption={sort as string} />
+      </div>
+    </header>
+
+    <section class="articles-grid">
+      {
+        currentPagePosts.length > 0 ? (
+          <div class="articles-collection__grid">
+            {currentPagePosts.map((post) => {
+              const imagePath = `/src/assets/posts/${post.slug}/cover.jpg`
+
+              return (
+                <PostCard
+                  title={post.data.title}
+                  description={post.data.description}
+                  publishDate={post.data.publishDate}
+                  author={post.data.author}
+                  image={imagePath}
+                  tags={post.data.tags}
+                  readTime={post.data.readTime}
+                  slug={post.slug}
+                  featured={post.data.featured}
+                />
+              )
+            })}
+          </div>
+        ) : (
+          <div class="articles-empty">
+            <p>Nie znaleziono artykułów.</p>
+          </div>
+        )
+      }
     </section>
+
+    {
+      totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/articles" />
+      )
+    }
+  </div>
 </BasicLayout>
+
+<style>
+  .articles-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .articles-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .articles-title {
+    font-size: 2.5rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 0.5rem;
+  }
+
+  .articles-description {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 800px;
+    margin-bottom: 2rem;
+  }
+
+  .articles-sorting {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .articles-collection__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  .articles-empty {
+    text-align: center;
+    padding: 4rem 0;
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  @media (min-width: 768px) {
+    .articles-collection__grid {
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+
+    .articles-title {
+      font-size: 3rem;
+    }
+
+    .articles-container {
+      padding: 3rem 2rem;
+    }
+  }
+</style>
