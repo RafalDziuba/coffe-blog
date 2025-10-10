@@ -14,12 +14,7 @@ const sortOptions = [
 <div class="sorting-container">
   <label for="sort-select" class="sorting-label">Sortuj według:</label>
   <div class="select-wrapper">
-    <select
-      id="sort-select"
-      class="sorting-select"
-      onchange="window.location = '/articles?sort=' + this.value + (new URLSearchParams(window.location.search).get('page') ? '&page=' + new URLSearchParams(window.location.search).get('page') : '')"
-      aria-label="Sortuj artykuły"
-    >
+    <select id="sort-select" class="sorting-select" aria-label="Sortuj artykuły">
       {
         sortOptions.map((option) => (
           <option value={option.value} selected={sortOption === option.value}>
@@ -31,6 +26,31 @@ const sortOptions = [
     <div class="select-arrow">▼</div>
   </div>
 </div>
+
+<script>
+  function initSorting() {
+    const select = document.getElementById('sort-select') as HTMLSelectElement | null
+    if (!select) return
+
+    select.addEventListener('change', () => {
+      const url = new URL(window.location.href)
+      url.searchParams.set('sort', select.value)
+
+      // Resetuj paginację przy zmianie sortowania
+      url.searchParams.delete('page')
+
+      // Przekieruj do nowej strony (SSR wygeneruje nową wersję)
+      window.location.href = url.toString()
+    })
+  }
+
+  // Uruchom po załadowaniu DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSorting)
+  } else {
+    initSorting()
+  }
+</script>
 
 <style>
   .sorting-container {
@@ -48,38 +68,37 @@ const sortOptions = [
 
   .select-wrapper {
     position: relative;
-    min-width: 180px;
+    display: inline-block;
   }
 
   .sorting-select {
-    width: 100%;
-    padding: 0.5rem 2rem 0.5rem 1rem;
     appearance: none;
-    background-color: #fff;
+    background-color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 0.95rem;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    color: var(--primary, #032e15);
+    transition: border-color 0.2s ease;
   }
 
   .sorting-select:hover {
-    border-color: var(--primary-light, #034d26);
+    border-color: var(--primary, #032e15);
   }
 
   .sorting-select:focus {
     outline: none;
     border-color: var(--primary, #032e15);
-    box-shadow: 0 0 0 2px rgba(3, 46, 21, 0.1);
+    box-shadow: 0 0 0 3px rgba(3, 46, 21, 0.1);
   }
 
   .select-arrow {
     position: absolute;
-    right: 10px;
+    right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 0.7rem;
-    color: var(--primary, #032e15);
     pointer-events: none;
+    font-size: 0.7rem;
+    color: #666;
   }
 </style>

@@ -1,3 +1,9 @@
-<section>
-    newsletter
-</section>
+---
+export const prerender = true // Strona O nas statyczna
+
+import BasicLayout from '../layouts/BasicLayout.astro'
+---
+
+<BasicLayout title="Newsletter" description="Zapisz się do newslettera">
+  <section>Newsletter</section>
+</BasicLayout>
