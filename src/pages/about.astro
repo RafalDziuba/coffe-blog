@@ -1,3 +1,9 @@
-<section>
-    about
-</section>
+---
+export const prerender = true
+
+import BasicLayout from '../layouts/BasicLayout.astro'
+---
+
+<BasicLayout title="O nas" description="Czym jest projekt Zakawieni?">
+  <section>O nas</section>
+</BasicLayout>

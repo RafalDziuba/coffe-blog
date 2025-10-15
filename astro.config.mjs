@@ -1,13 +1,19 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-
-import mdx from '@astrojs/mdx';
+import { defineConfig } from 'astro/config'
+import mdx from '@astrojs/mdx'
+import node from '@astrojs/node'
 
 // https://astro.build/config
 export default defineConfig({
-  vite: {
-  },
-  site: 'http://localhost:4321',
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
 
-  integrations: [mdx()]
-});
+  vite: {},
+
+  site: 'http://localhost:4321',
+  compressHTML: true,
+
+  integrations: [mdx()],
+})

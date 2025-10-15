@@ -1,24 +1,35 @@
 <section class="newsletter-section global-padding">
-  <h2 class="newsletter-heading">Get the best sent to your inbox, every month</h2>
+  <h2 class="newsletter-heading">
+    Zapisz się na newsletter po autorskie przepisy, promocje i nowości
+  </h2>
 
   <form class="newsletter-form">
+    <!-- widocznie ukryta etykieta dla dostępności -->
+    <label for="email" class="sr-only">Adres e-mail</label>
     <input
       class="newsletter-input"
       placeholder="Podaj swój email"
-      type="text"
+      type="email"
       name="email"
       id="email"
+      required
+      autocomplete="email"
+      inputmode="email"
+      maxlength="50"
     />
-    <button class="newsletter-button">Subskrybuj</button>
+    <button class="newsletter-button" type="submit">Subskrybuj</button>
   </form>
 
-  <p class="newsletter-subtext">subtekst</p>
+  <p class="newsletter-subtext">
+    Wiadomości będą wysyłane co miesiąc. Wypisanie się z newslettera jest możliwe w każdej chwili.
+  </p>
 </section>
 
 <style>
   .newsletter-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
     flex-wrap: wrap;
     background-color: var(--primary);
     width: 100%;
@@ -34,9 +45,30 @@
   }
 
   .newsletter-form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1rem;
+    justify-content: center; /* centrowanie zawartości (input + button) */
+    max-width: 600px;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .newsletter-form {
+      grid-template-columns: 1fr auto; /* input + button w jednej linii */
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .newsletter-input {
@@ -44,7 +76,24 @@
     padding: 0.5rem 1.25rem;
     background-color: white;
     border-radius: 0.25rem;
-    color: rgb(156, 163, 175); /* text-gray-400 */
+    border: 1px solid transparent;
+    color: var(--primary); /* lepszy kontrast niż szary tekst */
+    transition:
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+    width: 100%;
+  }
+
+  .newsletter-input::placeholder {
+    color: rgb(156, 163, 175);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow:
+      0 0 0 2px #fff,
+      0 0 0 5px var(--primary-accent);
   }
 
   .newsletter-button {
@@ -52,11 +101,38 @@
     background-color: var(--primary-accent);
     color: var(--primary);
     border-radius: 0.25rem;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0 1.25rem;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      transform 0.15s ease,
+      box-shadow 0.2s ease,
+      filter 0.15s ease; /* dodano filter */
+  }
+
+  .newsletter-button:hover,
+  .newsletter-button:focus-visible {
+    /* delikatny efekt: bez podbicia koloru tekstu, bez uniesienia */
+    filter: brightness(1.05);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    outline: none;
+    transform: none;
+    background-color: var(--primary-accent); /* zachowaj spójność koloru */
+    color: var(--primary);
+  }
+
+  .newsletter-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   }
 
   .newsletter-subtext {
     text-align: center;
     font-size: 0.75rem;
     font-family: var(--font-primary);
+    margin-top: 1rem;
   }
 </style>

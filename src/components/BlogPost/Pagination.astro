@@ -1,0 +1,187 @@
+---
+// Komponent paginacji dla strony artykułów
+interface Props {
+  currentPage: number
+  totalPages: number
+  baseUrl: string
+}
+
+const { currentPage = 1, totalPages = 1, baseUrl = '/articles' } = Astro.props
+
+// Funkcja pomocnicza do budowania URL z zachowaniem parametrów sortowania
+function buildPageUrl(page: number) {
+  const url = new URL(baseUrl, Astro.site || 'http://localhost:4321')
+
+  // Dodaj parametr strony
+  if (page > 1) {
+    url.searchParams.set('page', page.toString())
+  } else {
+    url.searchParams.delete('page')
+  }
+
+  // Zachowaj parametr sortowania jeśli istnieje
+  const currentUrl = new URL(Astro.request.url)
+  const sortParam = currentUrl.searchParams.get('sort')
+  if (sortParam) {
+    url.searchParams.set('sort', sortParam)
+  }
+
+  return url.pathname + url.search
+}
+
+// Generuj zakres stron do wyświetlenia
+function getPageRange() {
+  const delta = 2 // Ile stron pokazać przed i po aktualnej stronie
+  const range = []
+
+  // Zawsze pokazuj pierwszą stronę
+  range.push(1)
+
+  // Oblicz zakres stron wokół aktualnej
+  for (
+    let i = Math.max(2, currentPage - delta);
+    i <= Math.min(totalPages - 1, currentPage + delta);
+    i++
+  ) {
+    range.push(i)
+  }
+
+  // Zawsze pokazuj ostatnią stronę jeśli więcej niż 1 strona
+  if (totalPages > 1) {
+    range.push(totalPages)
+  }
+
+  // Dodaj wielokropki w odpowiednich miejscach
+  const pageRange = []
+  let prevPage = 0
+
+  for (const page of range) {
+    if (page - prevPage > 1) {
+      pageRange.push('...')
+    }
+    pageRange.push(page)
+    prevPage = page
+  }
+
+  return pageRange
+}
+
+const pageRange = getPageRange()
+const hasPrevious = currentPage > 1
+const hasNext = currentPage < totalPages
+---
+
+<nav class="pagination" aria-label="Paginacja artykułów">
+  <ul class="pagination__list">
+    <!-- Przycisk poprzedniej strony -->
+    <li class="pagination__item">
+      <a
+        href={hasPrevious ? buildPageUrl(currentPage - 1) : undefined}
+        class={`pagination__link pagination__link--nav ${!hasPrevious ? 'pagination__link--disabled' : ''}`}
+        aria-disabled={!hasPrevious}
+      >
+        &laquo; Poprzednia
+      </a>
+    </li>
+
+    <!-- Numery stron -->
+    {
+      pageRange.map((page) =>
+        typeof page === 'number' ? (
+          <li class="pagination__item">
+            <a
+              href={page === currentPage ? undefined : buildPageUrl(page)}
+              class={`pagination__link ${page === currentPage ? 'pagination__link--active' : ''}`}
+              aria-current={page === currentPage ? 'page' : undefined}
+            >
+              {page}
+            </a>
+          </li>
+        ) : (
+          <li class="pagination__item pagination__item--ellipsis">
+            <span class="pagination__ellipsis">{page}</span>
+          </li>
+        ),
+      )
+    }
+
+    <!-- Przycisk następnej strony -->
+    <li class="pagination__item">
+      <a
+        href={hasNext ? buildPageUrl(currentPage + 1) : undefined}
+        class={`pagination__link pagination__link--nav ${!hasNext ? 'pagination__link--disabled' : ''}`}
+        aria-disabled={!hasNext}
+      >
+        Następna &raquo;
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .pagination {
+    margin: 3rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pagination__list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 0.3rem;
+  }
+
+  .pagination__item {
+    margin: 0;
+  }
+
+  .pagination__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--primary, #032e15);
+    background-color: #f5f5f5;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .pagination__link:hover:not(.pagination__link--active, .pagination__link--disabled) {
+    background-color: #e0e0e0;
+  }
+
+  .pagination__link--active {
+    background-color: var(--primary, #032e15);
+    color: white;
+    font-weight: 500;
+    cursor: default;
+  }
+
+  .pagination__link--nav {
+    font-size: 0.9rem;
+  }
+
+  .pagination__link--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .pagination__item--ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+  }
+
+  .pagination__ellipsis {
+    color: #666;
+    letter-spacing: 1px;
+  }
+</style>

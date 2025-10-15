@@ -1,0 +1,104 @@
+---
+interface Props {
+  sortOption: string
+}
+
+const { sortOption = 'newest' } = Astro.props
+
+const sortOptions = [
+  { value: 'newest', label: 'Od najnowszych' },
+  { value: 'oldest', label: 'Od najstarszych' },
+]
+---
+
+<div class="sorting-container">
+  <label for="sort-select" class="sorting-label">Sortuj według:</label>
+  <div class="select-wrapper">
+    <select id="sort-select" class="sorting-select" aria-label="Sortuj artykuły">
+      {
+        sortOptions.map((option) => (
+          <option value={option.value} selected={sortOption === option.value}>
+            {option.label}
+          </option>
+        ))
+      }
+    </select>
+    <div class="select-arrow">▼</div>
+  </div>
+</div>
+
+<script>
+  function initSorting() {
+    const select = document.getElementById('sort-select') as HTMLSelectElement | null
+    if (!select) return
+
+    select.addEventListener('change', () => {
+      const url = new URL(window.location.href)
+      url.searchParams.set('sort', select.value)
+
+      // Resetuj paginację przy zmianie sortowania
+      url.searchParams.delete('page')
+
+      // Przekieruj do nowej strony (SSR wygeneruje nową wersję)
+      window.location.href = url.toString()
+    })
+  }
+
+  // Uruchom po załadowaniu DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSorting)
+  } else {
+    initSorting()
+  }
+</script>
+
+<style>
+  .sorting-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+  }
+
+  .sorting-label {
+    margin-right: 0.75rem;
+    font-size: 0.95rem;
+    color: #666;
+  }
+
+  .select-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .sorting-select {
+    appearance: none;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .sorting-select:hover {
+    border-color: var(--primary, #032e15);
+  }
+
+  .sorting-select:focus {
+    outline: none;
+    border-color: var(--primary, #032e15);
+    box-shadow: 0 0 0 3px rgba(3, 46, 21, 0.1);
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.7rem;
+    color: #666;
+  }
+</style>

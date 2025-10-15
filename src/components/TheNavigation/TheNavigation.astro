@@ -1,17 +1,26 @@
 ---
 import NavLink from './NavLink/NavLink.astro'
 import { standardLinks, featuredLinks, isLinkActive } from '../../data/navigation'
+import { Image } from 'astro:assets'
+import logoBlack from '../../assets/images/logo-black.svg'
 
 const { pathname } = Astro.url
 
-const isMobileView = false;
+const isMobileView = false
 ---
 
 <nav class="navigation global-padding" aria-label="Główna nawigacja">
   <div class="navigation__container">
     <div class="navigation__left">
       <a href="/" class="navigation__logo" aria-label="Strona główna" rel="home">
-        <span class="navigation__logo-text">CoffeeBlog</span>
+        <Image
+          src={logoBlack}
+          alt="Zakawieni - logo"
+          width={180}
+          height={50}
+          loading="eager"
+          class="navigation__logo-image"
+        />
       </a>
 
       {
@@ -127,14 +136,11 @@ const isMobileView = false;
     opacity: 0.8;
   }
 
-  .navigation__logo-text {
-    font-weight: bold;
-    font-size: 1.25rem;
-    white-space: nowrap;
+  .navigation__logo-image {
     height: auto;
     width: auto;
-    display: inline-block;
-    contain: layout;
+    max-height: 40px;
+    object-fit: contain;
   }
 
   .navigation__list {
@@ -192,7 +198,6 @@ const isMobileView = false;
     bottom: 0;
   }
 
-  /* Animacja przycisku nawigacji mobilnej */
   .navigation__toggle[aria-expanded='true'] .navigation__toggle-bar:nth-child(1) {
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
@@ -209,19 +214,19 @@ const isMobileView = false;
 
   .navigation__menu {
     position: fixed;
-    top: 64px; /* Wysokość nawigacji */
+    top: 64px;
     right: -100%;
     width: 80%;
     max-width: 300px;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    height: calc(100vh - 64px); /* Wysokość ekranu minus wysokość nawigacji */
+    height: calc(100vh - 64px);
     background-color: white;
     transition: right 0.3s ease-in-out;
     overflow-y: auto;
     z-index: 100;
     content-visibility: auto;
-    contain-intrinsic-size: 0 500px; /* Przybliżona wysokość menu */
+    contain-intrinsic-size: 0 500px;
   }
 
   .navigation__menu-content {
@@ -252,7 +257,6 @@ const isMobileView = false;
     pointer-events: auto;
   }
 
-  /* Separator */
   .navigation__separator {
     width: 100%;
     height: 1px;
@@ -260,7 +264,6 @@ const isMobileView = false;
     margin: 0.5rem 0 1rem;
   }
 
-  /* Wersja dla desktop (powyżej 1023px) */
   @media (min-width: 1024px) {
     .navigation__toggle {
       display: none;
@@ -274,7 +277,6 @@ const isMobileView = false;
       display: none;
     }
 
-    /* Pokazanie linków desktopowych w wersji desktopowej */
     .navigation__list--desktop {
       display: flex !important;
       visibility: visible;
@@ -293,70 +295,78 @@ const isMobileView = false;
       margin-left: 2rem;
     }
   }
+
+  @media (max-width: 480px) {
+    .navigation__logo-image {
+      max-height: 32px;
+    }
+  }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const checkIsMobileView = (): boolean => {
-      return window.innerWidth < 1024 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
-    };
-    
-    const isMobileView: boolean = checkIsMobileView();
-    
-    const desktopNavElements: NodeListOf<HTMLElement> = document.querySelectorAll('.navigation__list--desktop');
-    
+      return window.innerWidth < 1024 || /Mobi|Android|iPhone/i.test(navigator.userAgent)
+    }
+
+    const isMobileView: boolean = checkIsMobileView()
+
+    const desktopNavElements: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '.navigation__list--desktop',
+    )
+
     desktopNavElements.forEach((element: HTMLElement) => {
       if (isMobileView) {
-        element.style.display = 'none';
+        element.style.display = 'none'
       } else {
-        element.style.display = 'flex';
+        element.style.display = 'flex'
       }
-    });
-    
-    window.addEventListener('resize', () => {
-      const currentIsMobileView: boolean = checkIsMobileView();
-      desktopNavElements.forEach((element: HTMLElement) => {
-        element.style.display = currentIsMobileView ? 'none' : 'flex';
-      });
-    });
+    })
 
-    const toggleButton = document.querySelector('.navigation__toggle') as HTMLButtonElement | null;
-    const overlay = document.querySelector('.navigation__overlay') as HTMLDivElement | null;
+    window.addEventListener('resize', () => {
+      const currentIsMobileView: boolean = checkIsMobileView()
+      desktopNavElements.forEach((element: HTMLElement) => {
+        element.style.display = currentIsMobileView ? 'none' : 'flex'
+      })
+    })
+
+    const toggleButton = document.querySelector('.navigation__toggle') as HTMLButtonElement | null
+    const overlay = document.querySelector('.navigation__overlay') as HTMLDivElement | null
 
     if (toggleButton && overlay) {
       toggleButton.addEventListener('click', () => {
-        const expanded = toggleButton.getAttribute('aria-expanded') === 'true';
-        toggleButton.setAttribute('aria-expanded', (!expanded).toString());
+        const expanded = toggleButton.getAttribute('aria-expanded') === 'true'
+        toggleButton.setAttribute('aria-expanded', (!expanded).toString())
 
-        overlay.classList.toggle('active', !expanded);
+        overlay.classList.toggle('active', !expanded)
 
-        document.body.style.overflow = !expanded ? 'hidden' : '';
-      });
+        document.body.style.overflow = !expanded ? 'hidden' : ''
+      })
 
       overlay.addEventListener('click', () => {
-        toggleButton.setAttribute('aria-expanded', 'false');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-      });
+        toggleButton.setAttribute('aria-expanded', 'false')
+        overlay.classList.remove('active')
+        document.body.style.overflow = ''
+      })
 
-      const navLinks: NodeListOf<HTMLElement> = document.querySelectorAll('.navigation__link');
+      const navLinks: NodeListOf<HTMLElement> = document.querySelectorAll('.navigation__link')
       navLinks.forEach((link: HTMLElement) => {
         link.addEventListener('click', () => {
           if (window.innerWidth < 1024) {
-            toggleButton.setAttribute('aria-expanded', 'false');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
+            toggleButton.setAttribute('aria-expanded', 'false')
+            overlay.classList.remove('active')
+            document.body.style.overflow = ''
           }
-        });
-      });
+        })
+      })
 
       document.addEventListener('keydown', (e: KeyboardEvent) => {
         if (e.key === 'Escape' && toggleButton.getAttribute('aria-expanded') === 'true') {
-          toggleButton.setAttribute('aria-expanded', 'false');
-          overlay.classList.remove('active');
-          document.body.style.overflow = '';
+          toggleButton.setAttribute('aria-expanded', 'false')
+          overlay.classList.remove('active')
+          document.body.style.overflow = ''
         }
-      });
+      })
     }
-  });
+  })
 </script>
