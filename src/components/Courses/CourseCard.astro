@@ -1,0 +1,404 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+
+interface Props {
+  course: CollectionEntry<'courses'>
+  showNewsletterPromo?: boolean
+}
+
+const { course, showNewsletterPromo = false } = Astro.props
+const { data } = course
+
+const badgeColors = {
+  blue: '#2196f3',
+  green: '#28a745',
+  red: '#dc3545',
+  yellow: '#ffc107',
+}
+
+const badgeColor = data.badgeColor ? badgeColors[data.badgeColor] : badgeColors.green
+
+const levelLabels = {
+  beginner: 'Początkujący',
+  intermediate: 'Średniozaawansowany',
+  advanced: 'Zaawansowany',
+}
+
+const isComingSoon = data.status === 'coming-soon'
+const isAvailable = data.status === 'available'
+---
+
+<article class="course-card" data-status={data.status}>
+  {data.badge && (
+    <div class="course-badge" style={`background-color: ${badgeColor}`}>
+      {data.badge}
+    </div>
+  )}
+
+  <div class="course-image">
+    <Image
+      src={data.image}
+      alt={data.title}
+      width={600}
+      height={700}
+      loading="lazy"
+    />
+    
+    {isComingSoon && data.launchDate && (
+      <div class="launch-date">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H9v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+        Start: {data.launchDate.toLocaleDateString('pl-PL', { 
+          day: 'numeric', 
+          month: 'long', 
+          year: 'numeric' 
+        })}
+      </div>
+    )}
+  </div>
+
+  <div class="course-content">
+    <h3 class="course-title">{data.title}</h3>
+    <p class="course-description">{data.shortDescription}</p>
+
+    <div class="course-info">
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 0L12.5 5.5L18 6.5L14 10.5L15 16L10 13.5L5 16L6 10.5L2 6.5L7.5 5.5L10 0Z"/>
+        </svg>
+        {data.lessons} lekcji
+      </div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H9v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+        {data.duration}
+      </div>
+      {data.rating && (
+        <div class="info-item info-rating">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 0L12.5 5.5L18 6.5L14 10.5L15 16L10 13.5L5 16L6 10.5L2 6.5L7.5 5.5L10 0Z"/>
+          </svg>
+          {typeof(data.rating) === 'number' ? data.rating.toFixed(1) : data.rating}/5
+        </div>
+      )}
+    </div>
+
+    <ul class="course-features">
+      {data.features.slice(0, 4).map((feature) => (
+        <li>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm3.59 5.59L6.59 10.59 4.41 8.41l1.18-1.18 1 1 3.82-3.82 1.18 1.18z"/>
+          </svg>
+          {feature}
+        </li>
+      ))}
+    </ul>
+
+    {showNewsletterPromo && isComingSoon && (
+      <div class="newsletter-promo">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm-2 15l-5-5 1.41-1.41L8 12.17l7.59-7.59L17 6l-9 9z"/>
+        </svg>
+        <span>
+          <strong>Newsletter = 10% rabatu</strong> na starcie!
+        </span>
+      </div>
+    )}
+
+    <div class="course-footer">
+      <div class="course-price">
+        {data.originalPrice && (
+          <span class="original-price">{data.originalPrice} PLN</span>
+        )}
+        <span class="current-price">{data.price} PLN</span>
+      </div>
+
+      {isAvailable && (
+        <a href={`/courses/${course.slug}`} class="course-cta">
+          Zobacz szczegóły
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+            <path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      )}
+      
+      {isComingSoon && (
+        <button class="course-cta course-cta--notify" data-course={course.slug}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm1 15H9v-2h2v2zm0-4H9V5h2v6z"/>
+          </svg>
+          Powiadom mnie
+        </button>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .course-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  .course-card[data-status="coming-soon"] {
+    opacity: 0.95;
+  }
+
+  .course-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .course-image {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+
+  .course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .course-card:hover .course-image img {
+    transform: scale(1.08);
+  }
+
+  .launch-date {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
+    color: white;
+    padding: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .course-content {
+    padding: 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .course-meta {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .course-level,
+  .course-category {
+    padding: 0.4rem 0.9rem;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    color: #666;
+    font-weight: 600;
+  }
+
+  .course-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .course-description {
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .course-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .info-item svg {
+    color: var(--primary-accent, #f4a261);
+    flex-shrink: 0;
+  }
+
+  .info-rating svg {
+    color: #ffc107;
+  }
+
+  .course-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .course-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #666;
+  }
+
+  .course-features svg {
+    color: var(--primary, #032e15);
+    flex-shrink: 0;
+  }
+
+  .newsletter-promo {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #e7f3ff 0%, #cce7ff 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #0066cc;
+    border: 2px solid #99d6ff;
+  }
+
+  .newsletter-promo svg {
+    flex-shrink: 0;
+    color: #0066cc;
+  }
+
+  .newsletter-promo strong {
+    color: #004499;
+    font-weight: 700;
+  }
+
+  .course-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.75rem;
+    margin-top: 1.75rem;
+    border-top: 2px solid #e0e0e0;
+  }
+
+  .course-price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .original-price {
+    font-size: 1rem;
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  .current-price {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--primary, #032e15);
+  }
+
+  .course-cta {
+    background-color: var(--primary, #032e15);
+    color: white;
+    padding: 0.9rem 1.75rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .course-cta:hover {
+    background-color: var(--primary-light, #0c4e29);
+    transform: translateX(2px);
+  }
+
+  .course-cta--notify {
+    background-color: var(--primary-accent, #f4a261);
+    color: var(--primary, #032e15);
+  }
+
+  .course-cta--notify:hover {
+    background-color: #e59451;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .course-content {
+      padding: 1.5rem;
+    }
+
+    .course-title {
+      font-size: 1.5rem;
+    }
+
+    .current-price {
+      font-size: 1.75rem;
+    }
+
+    .course-footer {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .course-cta {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,527 @@
+---
+// filepath: d:\Programowanie\Projekty\coffee-blog\src\pages\terms-of-service.astro
+export const prerender = true
+
+import BasicLayout from '../layouts/BasicLayout.astro'
+---
+
+<BasicLayout
+  title="Regulamin serwisu | Blog o kawie"
+  description="Regulamin korzystania z serwisu zakawieni.pl - zasady, prawa i obowiązki użytkowników."
+>
+  <article class="terms-of-service">
+    <header class="terms-header">
+      <h1>Regulamin serwisu</h1>
+      <p class="terms-intro">
+        Niniejszy regulamin określa zasady korzystania z serwisu zakawieni.pl. Korzystając z
+        serwisu, akceptujesz poniższe warunki.
+      </p>
+    </header>
+
+    <section class="terms-section">
+      <h2>§1. Postanowienia ogólne</h2>
+
+      <h3>1. Definicje</h3>
+      <p>
+        Na potrzeby niniejszego Regulaminu przyjmuje się następujące znaczenie poniższych pojęć:
+      </p>
+      <ul>
+        <li>
+          <strong>Serwis</strong> - serwis internetowy dostępny pod adresem zakawieni.pl
+        </li>
+        <li>
+          <strong>Użytkownik</strong> - osoba fizyczna korzystająca z Serwisu
+        </li>
+        <li>
+          <strong>Administrator</strong> - podmiot prowadzący Serwis: Zakawieni, Adama Mickiewicza 4,
+          35-064 Rzeszów
+        </li>
+        <li>
+          <strong>Treści</strong> - artykuły, grafiki, filmy i inne materiały publikowane w Serwisie
+        </li>
+        <li>
+          <strong>Newsletter</strong> - usługa elektronicznej wysyłki informacji o nowościach
+        </li>
+      </ul>
+
+      <h3>2. Zakres stosowania</h3>
+      <p>
+        Regulamin określa zasady korzystania z Serwisu, w tym przeglądania treści, zapisywania się
+        do newslettera oraz korzystania z formularzy kontaktowych.
+      </p>
+
+      <p class="note">
+        <strong>Ważne:</strong> Korzystanie z Serwisu jest równoznaczne z akceptacją niniejszego Regulaminu.
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>§2. Zasady korzystania z Serwisu</h2>
+
+      <h3>1. Dostęp do Serwisu</h3>
+      <ul>
+        <li>Dostęp do Serwisu jest <strong>bezpłatny</strong></li>
+        <li>Nie wymaga rejestracji ani logowania</li>
+        <li>Wymaga urządzenia z dostępem do Internetu i przeglądarki internetowej</li>
+        <li>
+          Serwis wykorzystuje pliki cookies - szczegóły w
+          <a href="/privacy-policy">Polityce prywatności</a>
+        </li>
+      </ul>
+
+      <h3>2. Wymagania techniczne</h3>
+      <p>Do prawidłowego korzystania z Serwisu wymagane jest:</p>
+      <ul>
+        <li>Aktualna wersja przeglądarki internetowej (Chrome, Firefox, Safari, Edge)</li>
+        <li>Włączona obsługa JavaScript</li>
+        <li>Akceptacja plików cookies</li>
+        <li>Połączenie internetowe o minimalnej przepustowości 1 Mb/s</li>
+      </ul>
+
+      <h3>3. Zakazy</h3>
+      <p>Zabrania się:</p>
+      <div class="prohibition-list">
+        <div class="prohibition-item">
+          <strong>❌ Kopiowania treści</strong>
+          <p>bez zgody Administratora w celach komercyjnych</p>
+        </div>
+        <div class="prohibition-item">
+          <strong>❌ Ingerencji w infrastrukturę</strong>
+          <p>próby włamania, ataków DDoS, skanowania podatności</p>
+        </div>
+        <div class="prohibition-item">
+          <strong>❌ Rozpowszechniania złośliwego oprogramowania</strong>
+          <p>wirusów, malware, phishingu</p>
+        </div>
+        <div class="prohibition-item">
+          <strong>❌ Działań spamowych</strong>
+          <p>nadużywania formularzy, automatycznego pobierania treści</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="terms-section">
+      <h2>§3. Newsletter</h2>
+
+      <h3>1. Zasady świadczenia usługi Newsletter</h3>
+      <ul>
+        <li>Zapisanie się do Newslettera jest <strong>dobrowolne</strong></li>
+        <li>Wymaga podania prawidłowego adresu e-mail</li>
+        <li>Newsletter zawiera informacje o nowych artykułach, poradach i nowościach</li>
+        <li>
+          Newsletter wysyłany jest maksymalnie <strong>raz w tygodniu</strong>
+        </li>
+      </ul>
+
+      <h3>2. Rezygnacja z Newslettera</h3>
+      <p>Użytkownik może w każdej chwili zrezygnować z Newslettera poprzez:</p>
+      <ul>
+        <li>Kliknięcie linku "Wypisz się" w stopce każdej wiadomości</li>
+        <li>Wysłanie wiadomości na adres: zakawieniii.kontakt@gmail.com</li>
+      </ul>
+
+      <div class="info-box">
+        <h3>📧 Przetwarzanie danych w Newsletter</h3>
+        <p>
+          Dane osobowe (adres e-mail) są przetwarzane zgodnie z
+          <a href="/privacy-policy">Polityką prywatności</a>. Podstawa prawna: zgoda (art. 6 ust. 1
+          lit. a RODO).
+        </p>
+      </div>
+    </section>
+
+    <section class="terms-section">
+      <h2>§4. Własność intelektualna</h2>
+
+      <h3>1. Prawa autorskie</h3>
+      <p>
+        Wszystkie treści publikowane w Serwisie (artykuły, zdjęcia, grafiki, filmy) są chronione
+        prawem autorskim i stanowią własność intelektualną Administratora lub zostały użyte za zgodą
+        właścicieli praw.
+      </p>
+
+      <h3>2. Dozwolony użytek</h3>
+      <div class="usage-grid">
+        <div class="usage-allowed">
+          <h4>✅ Dozwolone:</h4>
+          <ul>
+            <li>Czytanie artykułów w celach prywatnych</li>
+            <li>Udostępnianie linków do artykułów</li>
+            <li>Cytowanie fragmentów z podaniem źródła</li>
+            <li>Zapisywanie do użytku osobistego</li>
+          </ul>
+        </div>
+        <div class="usage-forbidden">
+          <h4>❌ Zabronione:</h4>
+          <ul>
+            <li>Kopiowanie całych artykułów bez zgody</li>
+            <li>Publikowanie na innych stronach</li>
+            <li>Wykorzystanie komercyjne</li>
+            <li>Usuwanie znaków wodnych ze zdjęć</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="note">
+        <strong>Uwaga:</strong> Wykorzystanie treści poza dozwolonym użytkiem wymaga pisemnej zgody Administratora:
+        zakawieniii.kontakt@gmail.com
+      </p>
+    </section>
+
+    <section class="terms-section">
+      <h2>§5. Odpowiedzialność</h2>
+
+      <h3>1. Odpowiedzialność Administratora</h3>
+      <ul>
+        <li>
+          Administrator <strong>nie ponosi odpowiedzialności</strong> za:
+          <ul>
+            <li>Decyzje podejmowane na podstawie treści w Serwisie</li>
+            <li>Przerwy w dostępie do Serwisu wynikające z przyczyn technicznych</li>
+            <li>Szkody spowodowane błędami w treściach</li>
+            <li>Treści stron zewnętrznych linkowanych w Serwisie</li>
+          </ul>
+        </li>
+        <li>
+          Treści w Serwisie mają charakter <strong>informacyjny i edukacyjny</strong>
+        </li>
+        <li>Nie stanowią one porady profesjonalnej (medycznej, prawnej, finansowej)</li>
+      </ul>
+
+      <h3>2. Odpowiedzialność Użytkownika</h3>
+      <p>Użytkownik ponosi pełną odpowiedzialność za:</p>
+      <ul>
+        <li>Naruszenie postanowień niniejszego Regulaminu</li>
+        <li>Podanie nieprawdziwych danych</li>
+        <li>Działania sprzeczne z prawem lub dobrymi obyczajami</li>
+        <li>Szkody wyrządzone Administratorowi lub osobom trzecim</li>
+      </ul>
+
+      <div class="info-box warning">
+        <h3>⚠️ Ważne zastrzeżenie</h3>
+        <p>
+          Treści publikowane w Serwisie dotyczące kawy, zdrowia i żywienia mają charakter wyłącznie
+          informacyjny. W przypadku problemów zdrowotnych należy skonsultować się z lekarzem.
+        </p>
+      </div>
+    </section>
+
+    <section class="terms-section">
+      <h2>§6. Reklamacje</h2>
+
+      <h3>1. Składanie reklamacji</h3>
+      <p>Użytkownik może zgłosić reklamację dotyczącą działania Serwisu poprzez:</p>
+      <ul>
+        <li>
+          E-mail:
+          <a href="mailto:zakawieniii.kontakt@gmail.com">zakawieniii.kontakt@gmail.com</a>
+        </li>
+        <li>Tytuł wiadomości: "Reklamacja - zakawieni.pl"</li>
+      </ul>
+
+      <h3>2. Treść reklamacji powinna zawierać:</h3>
+      <ul>
+        <li>Imię i nazwisko Użytkownika</li>
+        <li>Adres e-mail kontaktowy</li>
+        <li>Szczegółowy opis problemu</li>
+        <li>Data i godzina wystąpienia problemu</li>
+        <li>Oczekiwany sposób rozpatrzenia reklamacji</li>
+      </ul>
+
+      <h3>3. Rozpatrywanie reklamacji</h3>
+      <ul>
+        <li>Reklamacje rozpatrywane są w terminie <strong>14 dni roboczych</strong></li>
+        <li>Odpowiedź wysyłana jest na adres e-mail podany w reklamacji</li>
+        <li>W uzasadnionych przypadkach termin może zostać wydłużony do 30 dni</li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>§7. Ochrona danych osobowych</h2>
+
+      <p>
+        Szczegółowe informacje o przetwarzaniu danych osobowych znajdują się w
+        <a href="/privacy-policy">Polityce prywatności</a>.
+      </p>
+
+      <h3>Podstawowe zasady:</h3>
+      <ul>
+        <li>Administrator przetwarza dane zgodnie z RODO</li>
+        <li>Dane są chronione odpowiednimi środkami technicznymi i organizacyjnymi</li>
+        <li>Użytkownik ma prawo dostępu, sprostowania i usunięcia danych</li>
+        <li>Dane nie są przekazywane poza Unię Europejską</li>
+      </ul>
+    </section>
+
+    <section class="terms-section">
+      <h2>§8. Postanowienia końcowe</h2>
+
+      <h3>1. Zmiany Regulaminu</h3>
+      <ul>
+        <li>Administrator zastrzega sobie prawo do zmiany Regulaminu</li>
+        <li>O zmianach Użytkownicy zostaną poinformowani poprzez komunikat na stronie głównej</li>
+        <li>
+          Zmiany wchodzą w życie po upływie <strong>7 dni</strong> od publikacji
+        </li>
+        <li>Kontynuacja korzystania z Serwisu po zmianie oznacza akceptację nowego Regulaminu</li>
+      </ul>
+
+      <h3>2. Prawo właściwe</h3>
+      <ul>
+        <li>
+          W sprawach nieuregulowanych w niniejszym Regulaminie mają zastosowanie przepisy prawa
+          polskiego
+        </li>
+        <li>Spory rozstrzygane będą przez właściwe sądy polskie</li>
+      </ul>
+
+      <h3>3. Postanowienia końcowe</h3>
+      <ul>
+        <li>
+          W przypadku sprzeczności między Regulaminem a Polityką prywatności, pierwszeństwo ma
+          Polityka prywatności
+        </li>
+        <li>
+          Jeśli jakiekolwiek postanowienie Regulaminu zostanie uznane za nieważne, pozostałe
+          postanowienia zachowują moc
+        </li>
+      </ul>
+
+      <div class="info-box">
+        <h3>📞 Kontakt</h3>
+        <p>W razie pytań dotyczących Regulaminu, skontaktuj się z nami:</p>
+        <p>
+          Email:
+          <a href="mailto:zakawieniii.kontakt@gmail.com">zakawieniii.kontakt@gmail.com</a>
+        </p>
+        <p>Adres: Zakawieni, Adama Mickiewicza 4, 35-064 Rzeszów</p>
+      </div>
+    </section>
+
+    <footer class="terms-footer">
+      <p>
+        <strong>Data wejścia w życie:</strong>
+        {new Date().toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </p>
+      <p>
+        <strong>Ostatnia aktualizacja:</strong>
+        {new Date().toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </p>
+    </footer>
+  </article>
+</BasicLayout>
+
+<style>
+  .terms-of-service {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: var(--font-primary);
+    line-height: 1.7;
+  }
+
+  .terms-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--primary, #032e15);
+  }
+
+  .terms-header h1 {
+    font-size: 2.5rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+  }
+
+  .terms-intro {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 1rem;
+  }
+
+  .terms-section {
+    margin-bottom: 3rem;
+  }
+
+  .terms-section h2 {
+    font-size: 1.8rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .terms-section h3 {
+    font-size: 1.3rem;
+    color: var(--primary, #032e15);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .terms-section h4 {
+    font-size: 1.1rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 0.5rem;
+  }
+
+  .terms-section p {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .terms-section ul {
+    margin: 1rem 0 1rem 1.5rem;
+    color: #333;
+  }
+
+  .terms-section li {
+    margin-bottom: 0.5rem;
+  }
+
+  .terms-section ul ul {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+  }
+
+  .info-box {
+    background-color: #f5f5f5;
+    border-left: 4px solid var(--primary, #032e15);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+
+  .info-box.warning {
+    background-color: #fff3cd;
+    border-left-color: #ffc107;
+  }
+
+  .info-box h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+
+  .info-box p {
+    margin-bottom: 0.5rem;
+  }
+
+  .info-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .note {
+    background-color: #e7f3ff;
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+
+  .prohibition-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .prohibition-item {
+    background-color: #fff5f5;
+    border-left: 4px solid #dc3545;
+    padding: 1rem;
+    border-radius: 4px;
+  }
+
+  .prohibition-item strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #dc3545;
+  }
+
+  .prohibition-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .usage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .usage-allowed,
+  .usage-forbidden {
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .usage-allowed {
+    background-color: #f0f9ff;
+    border: 2px solid #28a745;
+  }
+
+  .usage-allowed h4 {
+    color: #28a745;
+    margin-top: 0;
+  }
+
+  .usage-forbidden {
+    background-color: #fff5f5;
+    border: 2px solid #dc3545;
+  }
+
+  .usage-forbidden h4 {
+    color: #dc3545;
+    margin-top: 0;
+  }
+
+  .usage-allowed ul,
+  .usage-forbidden ul {
+    margin-left: 1.2rem;
+  }
+
+  .terms-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0e0e0;
+    text-align: center;
+    color: #666;
+  }
+
+  .terms-footer p {
+    margin-bottom: 0.5rem;
+  }
+
+  a {
+    color: var(--primary, #032e15);
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: var(--primary-light, #0c4e29);
+  }
+
+  strong {
+    color: var(--primary, #032e15);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .terms-header h1 {
+      font-size: 2rem;
+    }
+
+    .terms-section h2 {
+      font-size: 1.5rem;
+    }
+
+    .terms-section h3 {
+      font-size: 1.2rem;
+    }
+
+    .prohibition-list,
+    .usage-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

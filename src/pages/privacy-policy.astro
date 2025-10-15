@@ -1,0 +1,563 @@
+---
+export const prerender = true
+
+import BasicLayout from '../layouts/BasicLayout.astro'
+---
+
+<BasicLayout
+  title="Polityka prywatności | Blog o kawie"
+  description="Polityka prywatności serwisu - informacje o przetwarzaniu danych osobowych, cookies i prawach użytkowników."
+>
+  <article class="privacy-policy">
+    <header class="policy-header">
+      <h1>Polityka prywatności</h1>
+      <p class="policy-intro">
+        Szanujemy Twoją prywatność i dbamy o bezpieczeństwo Twoich danych osobowych. Poniżej
+        znajdziesz szczegółowe informacje o tym, jak przetwarzamy Twoje dane.
+      </p>
+    </header>
+
+    <section class="policy-section">
+      <h2>1. Informacje ogólne</h2>
+      <p>
+        Niniejsza polityka dotyczy Serwisu www, funkcjonującego pod adresem URL:
+        <strong>zakawieni.pl</strong>
+      </p>
+
+      <div class="info-box">
+        <h3>Administrator danych</h3>
+        <p><strong>Zakawieni</strong></p>
+        <p>Adama Mickiewicza 4, 35-064 Rzeszów</p>
+        <p>
+          Email:
+          <a href="mailto:zakawieniii.kontakt@gmail.com">zakawieniii.kontakt@gmail.com</a>
+        </p>
+      </div>
+
+      <p>
+        Operator jest Administratorem Twoich danych osobowych w odniesieniu do danych podanych
+        dobrowolnie w Serwisie.
+      </p>
+
+      <h3>Cele przetwarzania danych</h3>
+      <ul>
+        <li>Prowadzenie newslettera</li>
+        <li>Obsługa formularzy kontaktowych</li>
+        <li>Realizacja umów i świadczenie usług</li>
+      </ul>
+
+      <h3>Metody pozyskiwania informacji</h3>
+      <ul>
+        <li>Poprzez dobrowolnie wprowadzone dane w formularzach</li>
+        <li>Poprzez zapisywanie plików cookie w urządzeniach końcowych</li>
+      </ul>
+    </section>
+
+    <section class="policy-section">
+      <h2>2. Metody ochrony danych</h2>
+      <ul class="security-list">
+        <li>
+          <strong>Szyfrowanie transmisji</strong> - miejsca logowania i wprowadzania danych są chronione
+          certyfikatem SSL
+        </li>
+        <li>
+          <strong>Szyfrowanie bazy danych</strong> - dane przechowywane w bazie są zaszyfrowane
+        </li>
+        <li>
+          <strong>Regularna zmiana haseł</strong> - okresowa zmiana haseł administracyjnych
+        </li>
+        <li>
+          <strong>Aktualizacje oprogramowania</strong> - regularne aktualizacje wszystkich komponentów
+          systemowych
+        </li>
+      </ul>
+    </section>
+
+    <section class="policy-section">
+      <h2>3. Hosting</h2>
+      <p>
+        Serwis jest hostowany na serwerach operatora: <strong>OVH</strong>
+      </p>
+
+      <h3>Logi serwera</h3>
+      <p>
+        W celu zapewnienia niezawodności technicznej prowadzone są logi na poziomie serwera, które
+        mogą zawierać:
+      </p>
+      <ul>
+        <li>Adresy URL żądanych zasobów</li>
+        <li>Czas nadejścia zapytania i wysłania odpowiedzi</li>
+        <li>Nazwę stacji klienta (identyfikacja przez protokół HTTP)</li>
+        <li>Informacje o błędach transakcji HTTP</li>
+        <li>Adres URL strony poprzednio odwiedzanej (referer)</li>
+        <li>Informacje o przeglądarce użytkownika</li>
+        <li>Adres IP</li>
+        <li>Informacje diagnostyczne związane z zamawianiem usług</li>
+        <li>Informacje związane z obsługą poczty elektronicznej</li>
+      </ul>
+    </section>
+
+    <section class="policy-section">
+      <h2>4. Twoje prawa</h2>
+      <p>Przysługuje Ci prawo do:</p>
+      <ul class="rights-list">
+        <li>Dostępu do swoich danych osobowych</li>
+        <li>Sprostowania danych</li>
+        <li>Usunięcia danych</li>
+        <li>Ograniczenia przetwarzania</li>
+        <li>Przenoszenia danych</li>
+        <li>Złożenia sprzeciwu wobec przetwarzania danych</li>
+      </ul>
+
+      <div class="info-box warning">
+        <h3>Prawo do skargi</h3>
+        <p>
+          Na działania Administratora przysługuje skarga do <strong
+            >Prezesa Urzędu Ochrony Danych Osobowych</strong
+          >
+        </p>
+        <p>ul. Stawki 2, 00-193 Warszawa</p>
+      </div>
+
+      <h3>Odbiorcy danych</h3>
+      <p>
+        Administrator może przekazywać dane innym odbiorcom, jeśli jest to niezbędne do wykonania
+        umowy:
+      </p>
+      <ul>
+        <li>Upoważnieni pracownicy i współpracownicy</li>
+        <li>Firmy świadczące usługi marketingu</li>
+      </ul>
+
+      <h3>Okres przechowywania danych</h3>
+      <ul>
+        <li>
+          <strong>Dane księgowe:</strong> zgodnie z przepisami o rachunkowości
+        </li>
+        <li>
+          <strong>Dane marketingowe:</strong> nie dłużej niż 3 lata
+        </li>
+      </ul>
+
+      <p class="note">
+        <strong>Ważne:</strong> Podanie danych osobowych jest dobrowolne, lecz niezbędne do obsługi Serwisu.
+        Dane osobowe nie są przekazywane poza teren Unii Europejskiej.
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>5. Informacje w formularzach</h2>
+      <p>Serwis zbiera informacje podane dobrowolnie przez użytkownika, w tym dane osobowe.</p>
+
+      <h3>Co może być zapisywane:</h3>
+      <ul>
+        <li>Parametry połączenia (oznaczenie czasu, adres IP)</li>
+        <li>Informacje ułatwiające powiązanie danych w formularzu z adresem e-mail</li>
+      </ul>
+
+      <p>
+        Dane podane w formularzu są przetwarzane w celu wynikającym z funkcji konkretnego formularza
+        (np. obsługa zgłoszenia, kontakt, rejestracja usług).
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>6. Logi administratora</h2>
+      <p>
+        Informacje o zachowaniu użytkowników w serwisie mogą podlegać logowaniu. Dane te są
+        wykorzystywane wyłącznie w celu administrowania serwisem.
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>7. Techniki marketingowe i analityczne</h2>
+
+      <h3>Google Analytics</h3>
+      <p>
+        Operator stosuje analizę statystyczną ruchu na stronie poprzez
+        <strong>Google Analytics 4</strong> (Google Inc. z siedzibą w USA).
+      </p>
+
+      <div class="info-box">
+        <h3>⚙️ Tryb działania</h3>
+        <p>
+          Wszystkie dane użytkowników są <strong>anonimizowane</strong>. Nie zbieramy danych
+          osobowych, nie profilujemy użytkowników i nie stosujemy personalizacji reklam.
+        </p>
+      </div>
+
+      <p>Cookies analityczne służą wyłącznie do:</p>
+      <ul>
+        <li>Zliczania liczby odwiedzin</li>
+        <li>Analizy popularności artykułów</li>
+        <li>Optymalizacji treści</li>
+      </ul>
+
+      <p class="note">
+        <strong>Uwaga:</strong> Zgodnie z wytycznymi RODO, cookies analityczne w trybie anonimowym nie
+        wymagają dodatkowej zgody użytkownika.
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>8. Informacje o plikach cookies</h2>
+      <p>
+        Pliki cookies (tzw. „ciasteczka") to dane informatyczne, w szczególności pliki tekstowe,
+        które przechowywane są w urządzeniu końcowym użytkownika i przeznaczone są do korzystania ze
+        stron internetowych Serwisu.
+      </p>
+
+      <h3>Do czego używamy cookies:</h3>
+      <ul>
+        <li>Utrzymanie sesji użytkownika (po zalogowaniu)</li>
+        <li>Realizacja celów marketingowych</li>
+        <li>Analiza statystyczna ruchu</li>
+      </ul>
+
+      <h3>Rodzaje plików cookies:</h3>
+      <div class="cookies-types">
+        <div class="cookie-type">
+          <h4>Sesyjne (session cookies)</h4>
+          <p>
+            Pliki tymczasowe przechowywane do czasu wylogowania, opuszczenia strony lub wyłączenia
+            przeglądarki
+          </p>
+        </div>
+        <div class="cookie-type">
+          <h4>Stałe (persistent cookies)</h4>
+          <p>
+            Przechowywane przez czas określony w parametrach lub do czasu ich usunięcia przez
+            użytkownika
+          </p>
+        </div>
+      </div>
+
+      <h3>Podmioty korzystające z cookies:</h3>
+      <ul>
+        <li>Google (Google Inc. z siedzibą w USA)</li>
+        <li>Facebook (Facebook Inc. z siedzibą w USA)</li>
+        <li>Twitter (Twitter Inc. z siedzibą w USA)</li>
+      </ul>
+
+      <p class="note">
+        <strong>Uwaga:</strong> Ograniczenia stosowania plików cookies mogą wpłynąć na niektóre funkcjonalności
+        dostępne na stronach internetowych Serwisu.
+      </p>
+    </section>
+
+    <section class="policy-section">
+      <h2>9. Zarządzanie plikami cookies</h2>
+      <p>
+        Jeśli nie chcesz otrzymywać plików cookies, możesz zmienić ustawienia przeglądarki.
+        Wyłączenie obsługi plików cookies może utrudnić lub uniemożliwić korzystanie z serwisu.
+      </p>
+
+      <h3>Instrukcje dla popularnych przeglądarek:</h3>
+      <ul class="browser-list">
+        <li>
+          <a
+            href="https://support.microsoft.com/pl-pl/microsoft-edge"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Microsoft Edge
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://support.microsoft.com/pl-pl/windows/usuwanie-plik%C3%B3w-cookie-i-zarz%C4%85dzanie-nimi-168dab11-0753-043d-7c16-ede5947fc64d"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Internet Explorer
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://support.google.com/chrome/answer/95647?hl=pl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google Chrome
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://support.apple.com/pl-pl/guide/safari/sfri11471/mac"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Safari
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://support.mozilla.org/pl/kb/wzmocniona-ochrona-przed-sledzeniem-firefox-desktop"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Firefox
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://help.opera.com/pl/latest/web-preferences/#cookies"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Opera
+          </a>
+        </li>
+      </ul>
+
+      <h3>Urządzenia mobilne:</h3>
+      <ul class="browser-list">
+        <li>
+          <a
+            href="https://support.google.com/chrome/answer/95647?hl=pl&co=GENIE.Platform%3DAndroid"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Android
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://support.apple.com/pl-pl/105082"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Safari (iOS)
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="policy-footer">
+      <p>
+        <strong>Data ostatniej aktualizacji:</strong>
+        {new Date().toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}
+      </p>
+      <p>
+        W razie pytań dotyczących polityki prywatności, skontaktuj się z nami:
+        <a href="mailto:zakawieniii.kontakt@gmail.com">zakawieniii.kontakt@gmail.com</a>
+      </p>
+    </footer>
+  </article>
+</BasicLayout>
+
+<style>
+  .privacy-policy {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: var(--font-primary);
+    line-height: 1.7;
+  }
+
+  .policy-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--primary, #032e15);
+  }
+
+  .policy-header h1 {
+    font-size: 2.5rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+  }
+
+  .policy-intro {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 1rem;
+  }
+
+  .policy-section {
+    margin-bottom: 3rem;
+  }
+
+  .policy-section h2 {
+    font-size: 1.8rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .policy-section h3 {
+    font-size: 1.3rem;
+    color: var(--primary, #032e15);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .policy-section h4 {
+    font-size: 1.1rem;
+    color: var(--primary, #032e15);
+    margin-bottom: 0.5rem;
+  }
+
+  .policy-section p {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .policy-section ul {
+    margin: 1rem 0 1rem 1.5rem;
+    color: #333;
+  }
+
+  .policy-section li {
+    margin-bottom: 0.5rem;
+  }
+
+  .info-box {
+    background-color: #f5f5f5;
+    border-left: 4px solid var(--primary, #032e15);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+
+  .info-box.warning {
+    background-color: #fff3cd;
+    border-left-color: #ffc107;
+  }
+
+  .info-box h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+
+  .info-box p {
+    margin-bottom: 0.5rem;
+  }
+
+  .info-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .security-list li,
+  .rights-list li {
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+  }
+
+  .note {
+    background-color: #e7f3ff;
+    border-left: 4px solid #2196f3;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+
+  .cookies-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .cookie-type {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .cookie-type h4 {
+    color: var(--primary, #032e15);
+    margin-top: 0;
+  }
+
+  .cookie-type p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+  }
+
+  .browser-list {
+    list-style: none;
+    margin-left: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .browser-list li {
+    margin-bottom: 0;
+  }
+
+  .browser-list a {
+    display: block;
+    padding: 0.75rem 1rem;
+    background-color: #f5f5f5;
+    color: var(--primary, #032e15);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+
+  .browser-list a:hover {
+    background-color: var(--primary-light, #0c4e29);
+    color: white;
+  }
+
+  .policy-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0e0e0;
+    text-align: center;
+    color: #666;
+  }
+
+  .policy-footer p {
+    margin-bottom: 0.5rem;
+  }
+
+  .policy-footer a {
+    color: var(--primary, #032e15);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .policy-footer a:hover {
+    text-decoration: underline;
+  }
+
+  a {
+    color: var(--primary, #032e15);
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: var(--primary-light, #0c4e29);
+  }
+
+  strong {
+    color: var(--primary, #032e15);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .policy-header h1 {
+      font-size: 2rem;
+    }
+
+    .policy-section h2 {
+      font-size: 1.5rem;
+    }
+
+    .policy-section h3 {
+      font-size: 1.2rem;
+    }
+
+    .cookies-types {
+      grid-template-columns: 1fr;
+    }
+
+    .browser-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

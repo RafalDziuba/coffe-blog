@@ -1,6 +1,8 @@
 ---
 import { getFooterLinksByCategory, footerCategoryTitles } from '../../data/navigation'
 import FooterLinkColumn from './FooterLinkColumn.astro'
+import { Image } from 'astro:assets'
+import logoBlack from '../../assets/images/logo-black.svg'
 
 const { pathname } = Astro.url
 const footerLinksByCategory = getFooterLinksByCategory()
@@ -11,7 +13,14 @@ const currentYear = new Date().getFullYear()
   <div class="footer__container">
     <div class="footer__left">
       <a href="/" class="footer__logo" aria-label="Strona główna" rel="home">
-        <span class="footer__logo-text">CoffeeBlog</span>
+        <Image
+          src={logoBlack}
+          alt="Zakawieni - logo"
+          width={80}
+          height={55}
+          loading="lazy"
+          class="footer__logo-image"
+        />
       </a>
       <p class="footer__tagline">Pasja do kawy i dzielenia się wiedzą</p>
     </div>
@@ -82,11 +91,18 @@ const currentYear = new Date().getFullYear()
     text-decoration: none;
     color: inherit;
     margin-bottom: 0.5rem;
+    transition: opacity 0.2s ease;
   }
 
-  .footer__logo-text {
-    font-weight: bold;
-    font-size: 1.5rem;
+  .footer__logo:hover {
+    opacity: 0.8;
+  }
+
+  .footer__logo-image {
+    height: auto;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
   }
 
   .footer__tagline {
@@ -179,6 +195,10 @@ const currentYear = new Date().getFullYear()
   @media (max-width: 576px) {
     .footer__columns {
       justify-content: space-between;
+    }
+
+    .footer__logo-image {
+      max-width: 150px;
     }
   }
 </style>

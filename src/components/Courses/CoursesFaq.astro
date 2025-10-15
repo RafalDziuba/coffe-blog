@@ -1,0 +1,272 @@
+---
+// filepath: d:\Programowanie\Projekty\coffee-blog\src\components\Courses\CoursesFAQ.astro
+const faqs = [
+  {
+    question: 'Jak długo mam dostęp do kursu?',
+    answer: 'Wszystkie kursy są dostępne dożywotnio. Po zakupie możesz wracać do materiałów w dowolnym momencie, bez żadnych ograniczeń czasowych.',
+  },
+  {
+    question: 'Czy otrzymam certyfikat po ukończeniu kursu?',
+    answer: 'Tak! Po ukończeniu wszystkich lekcji i zaliczeniu quizu końcowego otrzymasz certyfikat ukończenia kursu, który możesz dodać do swojego CV lub portfolio.',
+  },
+  {
+    question: 'Jak mogę skorzystać z 10% zniżki na nowe kursy?',
+    answer: 'Wystarczy zapisać się do naszego newslettera. Przed premierą każdego nowego kursu otrzymasz specjalny kod rabatowy dający 10% zniżki, ważny przez pierwsze 7 dni od startu kursu.',
+  },
+  {
+    question: 'Czy kursy są odpowiednie dla początkujących?',
+    answer: 'Tak! Wszystkie nasze kursy są zaprojektowane tak, aby były zrozumiałe dla początkujących. Zaczynamy od podstaw i stopniowo przechodzimy do bardziej zaawansowanych technik.',
+  },
+  {
+    question: 'Jakie formy płatności akceptujecie?',
+    answer: 'Akceptujemy płatności kartą kredytową/debetową (Visa, Mastercard), BLIK oraz przelewy bankowe. Wszystkie płatności są zabezpieczone i szyfrowane.',
+  },
+  {
+    question: 'Czy mogę otrzymać zwrot pieniędzy?',
+    answer: 'Tak, oferujemy 30-dniową gwarancję zwrotu pieniędzy. Jeśli kurs nie spełni Twoich oczekiwań, możesz poprosić o pełny zwrot kosztów w ciągu 30 dni od zakupu.',
+  },
+  {
+    question: 'Czy mogę oglądać kursy na telefonie lub tablecie?',
+    answer: 'Oczywiście! Nasza platforma jest w pełni responsywna i działa na wszystkich urządzeniach - komputerach, tabletach i smartfonach. Możesz uczyć się w dowolnym miejscu i czasie.',
+  },
+  {
+    question: 'Czy otrzymam wsparcie podczas kursu?',
+    answer: 'Tak! Każdy kurs ma dedykowaną grupę wsparcia, gdzie możesz zadawać pytania instruktorowi i innym uczestnikom. Dodatkowo masz dostęp do sekcji Q&A pod każdą lekcją.',
+  },
+]
+---
+
+<section class="courses-faq">
+  <div class="faq-container">
+    <header class="faq-header">
+      <h2 class="faq-title">Najczęściej zadawane pytania</h2>
+      <p class="faq-description">
+        Znajdź odpowiedzi na pytania dotyczące naszych kursów. 
+        Nie znalazłeś odpowiedzi? <a href="/contact">Skontaktuj się z nami</a>
+      </p>
+    </header>
+
+    <div class="faq-list">
+      {faqs.map((faq, index) => (
+        <div class="faq-item" data-faq-item>
+          <button class="faq-question" aria-expanded="false" data-faq-button>
+            <span>{faq.question}</span>
+            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <polyline points="6 9 12 15 18 9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="faq-answer" data-faq-answer>
+            <p>{faq.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="faq-cta">
+      <p>Masz inne pytanie?</p>
+      <a href="/contact" class="faq-cta-button">
+        Skontaktuj się z nami
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initFAQ() {
+    const faqItems = document.querySelectorAll('[data-faq-item]')
+    
+    faqItems.forEach((item) => {
+      const button = item.querySelector('[data-faq-button]') as HTMLButtonElement
+      const answer = item.querySelector('[data-faq-answer]') as HTMLElement
+      
+      if (!button || !answer) return
+      
+      button.addEventListener('click', () => {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true'
+        
+        // Close all other items
+        faqItems.forEach((otherItem) => {
+          const otherButton = otherItem.querySelector('[data-faq-button]') as HTMLButtonElement
+          const otherAnswer = otherItem.querySelector('[data-faq-answer]') as HTMLElement
+          
+          if (otherButton && otherAnswer && otherItem !== item) {
+            otherButton.setAttribute('aria-expanded', 'false')
+            otherAnswer.style.maxHeight = '0'
+            otherItem.classList.remove('active')
+          }
+        })
+        
+        // Toggle current item
+        if (isExpanded) {
+          button.setAttribute('aria-expanded', 'false')
+          answer.style.maxHeight = '0'
+          item.classList.remove('active')
+        } else {
+          button.setAttribute('aria-expanded', 'true')
+          answer.style.maxHeight = answer.scrollHeight + 'px'
+          item.classList.add('active')
+        }
+      })
+    })
+  }
+  
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFAQ)
+  } else {
+    initFAQ()
+  }
+</script>
+
+<style>
+  .courses-faq {
+    padding: 5rem 2rem;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+  }
+
+  .faq-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .faq-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .faq-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+  }
+
+  .faq-description {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  .faq-description a {
+    color: var(--primary, #032e15);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-item {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .faq-item:hover,
+  .faq-item.active {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .faq-question {
+    width: 100%;
+    padding: 1.5rem;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary, #032e15);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: color 0.2s ease;
+  }
+
+  .faq-question:hover {
+    color: var(--primary-light, #0c4e29);
+  }
+
+  .faq-icon {
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    color: var(--primary-accent, #f4a261);
+  }
+
+  .faq-item.active .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-answer p {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    margin: 0;
+    color: #666;
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  .faq-cta {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, var(--primary, #032e15) 0%, var(--primary-light, #0c4e29) 100%);
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .faq-cta p {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 1.5rem;
+  }
+
+  .faq-cta-button {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: var(--primary-accent, #f4a261);
+    color: var(--primary, #032e15);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 162, 97, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .courses-faq {
+      padding: 3rem 1.5rem;
+    }
+
+    .faq-title {
+      font-size: 2rem;
+    }
+
+    .faq-question {
+      font-size: 1rem;
+      padding: 1.25rem;
+    }
+
+    .faq-answer p {
+      padding: 0 1.25rem 1.25rem 1.25rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>

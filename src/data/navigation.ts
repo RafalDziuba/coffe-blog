@@ -14,8 +14,8 @@ export interface NavigationLink {
 export const standardLinks: NavigationLink[] = [
   { href: '/', text: 'Strona główna', showInFooter: true, footerCategory: 'pages' },
   { href: '/articles', text: 'Blog', showInFooter: true, footerCategory: 'pages' },
-  { href: '/o-nas', text: 'O nas', showInFooter: true, footerCategory: 'pages' },
-  { href: '/kontakt', text: 'Kontakt', showInFooter: true, footerCategory: 'contact' },
+  { href: '/about', text: 'O nas', showInFooter: true, footerCategory: 'pages' },
+  { href: '/contact', text: 'Kontakt', showInFooter: true, footerCategory: 'contact' },
 ]
 
 export const featuredLinks: NavigationLink[] = [
@@ -27,8 +27,8 @@ export const featuredLinks: NavigationLink[] = [
     footerCategory: 'resources',
   },
   {
-    href: '/kursy',
-    text: 'Szkolenia',
+    href: '/courses',
+    text: 'Nasze Kursy',
     variant: 'featured',
     showInFooter: true,
     footerCategory: 'resources',
@@ -37,15 +37,15 @@ export const featuredLinks: NavigationLink[] = [
 
 export const footerOnlyLinks: NavigationLink[] = [
   {
-    href: '/polityka-prywatnosci',
+    href: '/privacy-policy',
     text: 'Polityka prywatności',
     showInFooter: true,
     footerCategory: 'legal',
   },
-  { href: '/regulamin', text: 'Regulamin', showInFooter: true, footerCategory: 'legal' },
+  { href: '/terms-and-conditions', text: 'Regulamin', showInFooter: true, footerCategory: 'legal' },
   { href: '/cookies', text: 'Polityka cookies', showInFooter: true, footerCategory: 'legal' },
   {
-    href: '/formularz-kontaktowy',
+    href: '/contact-form',
     text: 'Formularz kontaktowy',
     showInFooter: true,
     footerCategory: 'contact',

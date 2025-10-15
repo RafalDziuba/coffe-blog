@@ -1,0 +1,297 @@
+---
+export const prerender = true
+
+import BasicLayout from '../layouts/BasicLayout.astro'
+import { getCollection } from 'astro:content'
+import CourseCard from '../components/Courses/CourseCard.astro'
+import NewsletterCTA from '../components/Courses/NewsletterCTA.astro'
+import CoursesFAQ from '../components/Courses/CoursesFaq.astro'
+import { Image } from 'astro:assets'
+import coursesHeroIcon from '../assets/images/courses-hero-icon.svg'
+
+const allCourses = await getCollection('courses')
+
+const courses = allCourses.sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1
+  if (!a.data.featured && b.data.featured) return 1
+  return a.data.order - b.data.order
+})
+
+const availableCourses = courses.filter((c) => c.data.status === 'available')
+const comingSoonCourses = courses.filter((c) => c.data.status === 'coming-soon')
+const featuredCourses = courses.filter((c) => c.data.featured)
+
+const totalLessons = courses.reduce(
+  (sum, c) => sum + (typeof c.data.lessons === 'string' ? 0 : c.data.lessons),
+  0,
+)
+const avgRating = 4.9
+---
+
+<BasicLayout
+  title="Kursy online o kawie | Zakawieni"
+  description="Odkryj nasze kursy online o kawie - od podstaw parzenia po zaawansowane techniki baristy. Ucz się we własnym tempie z certyfikatem ukończenia."
+>
+  <section class="courses-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Kursy online <br />
+        <span class="hero-highlight">o kawie</span>
+      </h1>
+      <p class="hero-description">
+        Naucz się sztuki parzenia kawy od podstaw do poziomu mistrzowskiego. Wszystkie kursy z
+        certyfikatem, dostępem dożywotnim i wsparciem instruktorów.
+      </p>
+
+      <!-- <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">{courses.length}</span>
+          <span class="stat-label">Kursów</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{totalLessons}</span>
+          <span class="stat-label">Lekcji</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{avgRating}</span>
+          <span class="stat-label">Średnia ocena</span>
+        </div>
+      </div> -->
+
+      <a href="#courses" class="hero-cta">
+        Przeglądaj kursy
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path
+            d="M10 5v10m0 0l4-4m-4 4l-4-4"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"></path>
+        </svg>
+      </a>
+    </div>
+
+    <!-- SVG Illustration -->
+    <div class="hero-illustration">
+      <Image
+        src={coursesHeroIcon}
+        alt="Ilustracja filiżanki kawy"
+        width={500}
+        height={500}
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  {
+    availableCourses.length > 0 && (
+      <section class="courses-available" id="courses">
+        <div class="container">
+          <h2 class="section-title">Dostępne kursy</h2>
+          <div class="courses-grid">
+            {availableCourses.map((course) => (
+              <CourseCard course={course} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    comingSoonCourses.length > 0 && (
+      <section class="courses-coming-soon">
+        <div class="container">
+          <h2 class="section-title">Wkrótce</h2>
+          <p class="section-description">
+            Zapisz się do newslettera i otrzymaj <strong>10% zniżki</strong> na starcie kursu!
+          </p>
+          <div class="courses-grid">
+            {comingSoonCourses.map((course) => (
+              <CourseCard course={course} showNewsletterPromo={true} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <NewsletterCTA />
+  <CoursesFAQ />
+</BasicLayout>
+
+<style>
+  .courses-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    align-items: center;
+  }
+
+  .hero-content {
+    max-width: 600px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--primary, #032e15);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .hero-highlight {
+    color: var(--primary-accent, #f4a261);
+  }
+
+  .hero-description {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: var(--primary, #032e15);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(3, 46, 21, 0.3);
+  }
+
+  .hero-cta svg {
+    transition: transform 0.2s ease;
+  }
+
+  .hero-cta:hover svg {
+    transform: translateY(4px);
+  }
+
+  .courses-available,
+  .courses-coming-soon {
+    padding: 4rem 2rem;
+  }
+
+  .courses-coming-soon {
+    background-color: #f9f9f9;
+    border-radius: 15px;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary, #032e15);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .section-description {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2rem;
+  }
+
+  .hero-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hero-illustration img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .courses-hero {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .hero-illustration {
+      order: -1;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .courses-grid {
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .courses-hero {
+      padding: 2rem 1rem;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-illustration {
+      max-width: 300px;
+    }
+
+    .courses-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .courses-available,
+    .courses-coming-soon {
+      padding: 1rem 0.2rem;
+    }
+  }
+</style>
