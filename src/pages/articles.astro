@@ -83,7 +83,7 @@ const pageDescription =
         currentPagePosts.length > 0 ? (
           <div class="articles-collection__grid">
             {currentPagePosts.map((post) => {
-              const imagePath = `/src/assets/posts/${post.slug}/cover.jpg`
+              const imagePath = post.data.image
 
               return (
                 <PostCard
