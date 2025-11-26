@@ -1,0 +1,524 @@
+---
+// filepath: d:\Programowanie\Projekty\coffee-blog\src\components\AboutContent.astro
+import { Image } from 'astro:assets'
+---
+
+<article class="about-content">
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <h1 class="about-title">Kim są Zakawieni?</h1>
+    <div class="about-intro">
+      <p>
+        Kawa to nasz rytuał, pasja i sposób na życie. Zaczynaliśmy jako bariści, a dziś prowadzimy
+        własną kawiarnię, miejsce spotkań ludzi z pasją i aromatem w tle. Przez lata doskonaliliśmy
+        sztukę parzenia kawy — od espresso po alternatywne metody — i teraz dzielimy się tym
+        doświadczeniem w formie kursów baristycznych, szkoleń online i warsztatów wyjazdowych.
+      </p>
+      <p>
+        Wierzymy, że każda filiżanka może być małym dziełem sztuki. Dlatego uczymy nie tylko
+        techniki, ale też podejścia — jak z kawy uczynić codzienny rytuał, chwilę uważności i źródło
+        inspiracji.
+      </p>
+      <p class="about-cta-text">
+        Dołącz do naszej społeczności miłośników kawy i odkryj, jak wiele radości daje perfekcyjnie
+        zaparzony napar.
+      </p>
+    </div>
+  </section>
+
+  <!-- Statystyki -->
+  <section class="about-stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">Lat doświadczenia</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Uczestników szkoleń</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">15+</div>
+        <div class="stat-label">Kursów online</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Zadowolonych klientów</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlight Boxes -->
+  <section class="about-highlights">
+    <h2 class="section-title">Nasza misja i wartości</h2>
+    <div class="highlights-grid">
+      <div class="highlight-box">
+        <div class="highlight-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              d="M12 2L2 7l10 5 10-5-10-5z"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M2 17l10 5 10-5"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M2 12l10 5 10-5"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <h3 class="highlight-title">Doświadczenie</h3>
+        <p class="highlight-description">
+          Ponad dekada pracy jako bariści i właściciele kawiarni. Znamy każdy aspekt branży od
+          podszewki.
+        </p>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <circle
+              cx="9"
+              cy="7"
+              r="4"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></circle>
+            <path
+              d="M23 21v-2a4 4 0 0 0-3-3.87"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <path
+              d="M16 3.13a4 4 0 0 1 0 7.75"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <h3 class="highlight-title">Społeczność</h3>
+        <p class="highlight-description">
+          Budujemy społeczność pasjonatów kawy. Każdy może znaleźć tu swoje miejsce i inspirację.
+        </p>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              d="M22 11.08V12a10 10 0 1 1-5.93-9.14"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <polyline
+              points="22 4 12 14.01 9 11.01"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></polyline>
+          </svg>
+        </div>
+        <h3 class="highlight-title">Jakość</h3>
+        <p class="highlight-description">
+          Stawiamy na wysoką jakość szkoleń, materiałów i obsługi. Każdy detal ma znaczenie.
+        </p>
+      </div>
+
+      <div class="highlight-box">
+        <div class="highlight-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 2v20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            ></path>
+            <path
+              d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <h3 class="highlight-title">Pasja</h3>
+        <p class="highlight-description">
+          Kawa to nie tylko praca — to nasza największa pasja, którą chcemy się dzielić z innymi.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galeria zdjęć -->
+  <section class="about-gallery">
+    <h2 class="section-title">Nasza historia w obrazach</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img
+          src="/images/about/coffee-shop.jpg"
+          alt="Wnętrze kawiarni Zakawieni - przytulne miejsce spotkań miłośników kawy"
+          class="gallery-image"
+          loading="lazy"
+        />
+        <p class="gallery-caption">Nasza kawiarnia</p>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="/images/about/barista-work.jpg"
+          alt="Barista przygotowuje latte art - profesjonalna praca z kawą"
+          class="gallery-image"
+          loading="lazy"
+        />
+        <p class="gallery-caption">Sztuka parzenia</p>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="/images/about/workshop.jpg"
+          alt="Uczestnicy kursu baristycznego podczas warsztatów - szkolenia z kawy"
+          class="gallery-image"
+          loading="lazy"
+        />
+        <p class="gallery-caption">Warsztaty i kursy</p>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="/images/about/coffee-details.jpg"
+          alt="Detale kawowe - świeżo palone ziarna kawy i profesjonalny sprzęt"
+          class="gallery-image"
+          loading="lazy"
+        />
+        <p class="gallery-caption">Pasja w detalu</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="about-cta">
+    <div class="cta-content">
+      <h2 class="cta-title">Gotowy na kawową przygodę?</h2>
+      <p class="cta-description">
+        Zobacz nasze kursy, dołącz do newslettera lub skontaktuj się z nami bezpośrednio.
+      </p>
+      <div class="cta-buttons">
+        <a href="/courses" class="cta-button cta-button--primary">
+          Sprawdź kursy
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+            <path
+              d="M5 10h10m0 0l-4-4m4 4l-4 4"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <a href="/contact" class="cta-button cta-button--secondary"> Skontaktuj się </a>
+        <a href="/newsletter" class="cta-button cta-button--secondary"> Newsletter </a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<style>
+  .about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Hero Section */
+  .about-hero {
+    margin-bottom: 4rem;
+  }
+
+  .about-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    line-height: 1.2;
+  }
+
+  .about-intro {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .about-intro p {
+    margin-bottom: 1.5rem;
+  }
+
+  .about-cta-text {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1.2rem;
+  }
+
+  /* Statystyki */
+  .about-stats {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .stat-item {
+    text-align: center;
+    color: white;
+  }
+
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    color: var(--primary-accent);
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.95;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Highlights */
+  .about-highlights {
+    margin-bottom: 4rem;
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .highlight-box {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .highlight-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+  }
+
+  .highlight-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .highlight-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #666;
+  }
+
+  /* Gallery */
+  .about-gallery {
+    margin-bottom: 4rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f5f5f5;
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+  }
+
+  .gallery-caption {
+    padding: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-align: center;
+    background: white;
+  }
+
+  /* CTA Section */
+  .about-cta {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .cta-description {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .cta-button--primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+  }
+
+  .cta-button--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(3, 46, 21, 0.2);
+  }
+
+  .cta-button--secondary {
+    background: white;
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  .cta-button--secondary:hover {
+    background: var(--primary-accent);
+    transform: translateY(-2px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .about-title {
+      font-size: 2rem;
+    }
+
+    .about-intro {
+      font-size: 1rem;
+    }
+
+    .about-cta-text {
+      font-size: 1.1rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+    }
+
+    .highlights-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .gallery-image {
+      height: 200px;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cta-button {
+      justify-content: center;
+    }
+
+    .about-stats {
+      padding: 2rem 1.5rem;
+    }
+
+    .about-cta {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-title {
+      font-size: 1.75rem;
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
