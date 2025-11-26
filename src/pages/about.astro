@@ -2,8 +2,12 @@
 export const prerender = true
 
 import BasicLayout from '../layouts/BasicLayout.astro'
+import AboutContent from '../components/AboutContent.astro'
 ---
 
-<BasicLayout title="O nas" description="Czym jest projekt Zakawieni?">
-  <section>O nas</section>
+<BasicLayout
+  title="O nas - Zakawieni | Pasja kawy od ponad 10 lat"
+  description="Poznaj historię Zakawieni - doświadczonych baristów i właścicieli kawiarni. Kursy baristyczne, szkolenia online i warsztaty z kawy. Dołącz do społeczności miłośników kawy."
+>
+  <AboutContent />
 </BasicLayout>
