@@ -2,6 +2,7 @@
 import '../styles/global.css'
 import TheNavigation from '../components/TheNavigation/TheNavigation.astro'
 import TheFooter from '../components/TheFooter/TheFooter.astro'
+import Seo from '../components/Seo/Seo.astro'
 
 interface Props {
   title: string
@@ -27,7 +28,6 @@ const {
   canonicalURL = Astro.url.href,
 } = Astro.props
 
-// Format daty dla schema.org
 const isoPublishDate = new Date(publishDate).toISOString()
 const isoUpdatedDate = updatedDate ? new Date(updatedDate).toISOString() : isoPublishDate
 
@@ -45,41 +45,6 @@ const formattedUpdatedDate = updatedDate
       day: 'numeric',
     })
   : null
-
-// Przygotowanie danych dla Schema.org
-const schemaData = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: title,
-  description: description,
-  image: new URL(image, Astro.site).toString(),
-  author: {
-    '@type': 'Person',
-    name: author,
-  },
-  publisher: {
-    '@type': 'Organization',
-    name: 'CoffeeBlog',
-    logo: {
-      '@type': 'ImageObject',
-      url: new URL('/images/logo.png', Astro.site).toString(),
-    },
-  },
-  datePublished: isoPublishDate,
-  dateModified: isoUpdatedDate,
-  mainEntityOfPage: {
-    '@type': 'WebPage',
-    '@id': canonicalURL,
-  },
-  keywords: tags.join(', '),
-}
-
-// Generowanie dynamicznego opisu Open Graph
-const ogDescription =
-  description || `Przeczytaj artykuł "${title}" na CoffeeBlog i dowiedz się więcej o kawie`
-
-// Generowanie tagu dla Twitter Cards
-const twitterCardType = image ? 'summary_large_image' : 'summary'
 ---
 
 <!doctype html>
@@ -87,50 +52,18 @@ const twitterCardType = image ? 'summary_large_image' : 'summary'
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Podstawowe meta tagi -->
-    <title>{title} | CoffeeBlog</title>
-    <meta name="description" content={description} />
-    <meta name="author" content={author} />
-    <meta name="generator" content={Astro.generator} />
-
-    <!-- Canonical URL - zapobiega problemom z duplikacją treści -->
-    <link rel="canonical" href={canonicalURL} />
-
-    <!-- Meta tagi dla wyszukiwarek -->
-    <meta name="robots" content="index, follow" />
-    <meta name="keywords" content={tags.join(', ')} />
-
-    <!-- Open Graph dla mediów społecznościowych -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={ogDescription} />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
-    <meta property="og:site_name" content="CoffeeBlog" />
-    <meta property="article:published_time" content={isoPublishDate} />
-    {updatedDate && <meta property="article:modified_time" content={isoUpdatedDate} />}
-    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content={twitterCardType} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(image, Astro.site)} />
-
-    <!-- Struktura danych Schema.org dla artykułu -->
-    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
-
-    <!-- Czas czytania dla usług wyszukiwania -->
-    <meta property="article:read_time" content={readTime.replace(/\D/g, '')} />
-
-    <!-- Favikony -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-
+    <Seo
+      title={title}
+      description={description}
+      canonicalURL={canonicalURL}
+      image={image}
+      type="article"
+      publishDate={publishDate}
+      updatedDate={updatedDate}
+      author={author}
+      tags={tags}
+      readTime={readTime}
+    />
     <!-- Preload głównych zasobów dla lepszej wydajności -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

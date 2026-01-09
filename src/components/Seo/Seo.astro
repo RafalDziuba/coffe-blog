@@ -1,0 +1,116 @@
+---
+import type { Props } from "../../../types/seoTypes";
+
+const {
+  title,
+  description,
+  canonicalURL = new URL(Astro.url.pathname, Astro.site).toString(),
+  image,
+  type = "website",
+  publishDate,
+  updatedDate,
+  author,
+  tags = [],
+  readTime,
+} = Astro.props;
+
+const formattedTitle = `${title} | CoffeeBlog`;
+const siteName = "CoffeeBlog";
+const defaultImage = new URL("/images/og-default.jpg", Astro.site).toString();
+const ogImage = image ? new URL(image, Astro.site).toString() : defaultImage;
+const twitterCardType = image ? "summary_large_image" : "summary";
+
+// Schema.org data generation
+const baseSchema = {
+  "@context": "https://schema.org",
+  "@type": type === "article" ? "BlogPosting" : "WebPage",
+  headline: title,
+  description: description,
+  image: ogImage,
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalURL,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: siteName,
+    logo: {
+      "@type": "ImageObject",
+      url: new URL("/images/logo.png", Astro.site).toString(),
+    },
+  },
+};
+
+const articleSchema =
+  type === "article"
+    ? {
+        ...baseSchema,
+        datePublished: publishDate ? new Date(publishDate).toISOString() : undefined,
+        dateModified: updatedDate
+          ? new Date(updatedDate).toISOString()
+          : publishDate
+          ? new Date(publishDate).toISOString()
+          : undefined,
+        author: {
+          "@type": "Person",
+          name: author || "CoffeeBlog Team",
+        },
+        keywords: tags.join(", "),
+      }
+    : {};
+
+const finalSchema = type === "article" ? articleSchema : baseSchema;
+---
+
+<!-- Primary Meta Tags -->
+<title>{formattedTitle}</title>
+<meta name="description" content={description} />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={siteName} />
+
+{
+  type === "article" && publishDate && (
+    <meta property="article:published_time" content={new Date(publishDate).toISOString()} />
+  )
+}
+{
+  type === "article" && updatedDate && (
+    <meta property="article:modified_time" content={new Date(updatedDate).toISOString()} />
+  )
+}
+{
+  type === "article" &&
+    tags.map((tag) => <meta property="article:tag" content={tag} />)
+}
+{
+    type === "article" && readTime && (
+        <meta property="article:read_time" content={readTime.replace(/\D/g, '')} />
+    )
+}
+
+<!-- Twitter -->
+<meta name="twitter:card" content={twitterCardType} />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- Schema.org -->
+<script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />

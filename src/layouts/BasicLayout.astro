@@ -1,6 +1,7 @@
 ---
 import TheFooter from "../components/TheFooter/TheFooter.astro";
 import TheNavigation from "../components/TheNavigation/TheNavigation.astro";
+import Seo from "../components/Seo/Seo.astro";
 import "../styles/global.css";
 
 import type { Props } from '../types/basicLayoutTypes'
@@ -13,10 +14,7 @@ const { title, description }: Props = Astro.props
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
+    <Seo title={title} description={description} />
   </head>
   <body>
     <TheNavigation />

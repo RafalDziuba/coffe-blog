@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import node from '@astrojs/node'
+import sitemap from '@astrojs/sitemap'
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,8 +13,8 @@ export default defineConfig({
 
   vite: {},
 
-  site: 'http://localhost:4321',
+  site: 'https://twoja-domena.pl', // WAŻNE: Zmień na prawdziwy adres URL strony
   compressHTML: true,
 
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap()],
 })
