@@ -99,17 +99,6 @@ const slides = Object.entries(heroImages)
           </article>
         ))
       }
-    </div>
-
-    <div class="hero-slider__controls">
-      <div class="hero-slider__nav-buttons">
-        <button class="hero-slider__arrow" type="button" data-prev aria-label="Poprzedni slajd">
-          <span aria-hidden="true">&larr;</span>
-        </button>
-        <button class="hero-slider__arrow" type="button" data-next aria-label="Nastepny slajd">
-          <span aria-hidden="true">&rarr;</span>
-        </button>
-      </div>
 
       <div class="hero-slider__pagination" aria-label="Wybierz slajd">
         {
@@ -124,6 +113,17 @@ const slides = Object.entries(heroImages)
             />
           ))
         }
+      </div>
+    </div>
+
+    <div class="hero-slider__controls">
+      <div class="hero-slider__nav-buttons">
+        <button class="hero-slider__arrow" type="button" data-prev aria-label="Poprzedni slajd">
+          <span aria-hidden="true">&larr;</span>
+        </button>
+        <button class="hero-slider__arrow" type="button" data-next aria-label="Nastepny slajd">
+          <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
     </div>
   </div>
@@ -339,11 +339,26 @@ const slides = Object.entries(heroImages)
     padding: 1.25rem 0 0;
   }
 
-  .hero-slider__nav-buttons,
-  .hero-slider__pagination {
+  .hero-slider__nav-buttons {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+  }
+
+  .hero-slider__pagination {
+    position: absolute;
+    bottom: clamp(1.5rem, 4vw, 2.5rem);
+    right: clamp(1.5rem, 4vw, 2.5rem);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .hero-slider__arrow,
@@ -374,19 +389,23 @@ const slides = Object.entries(heroImages)
   }
 
   .hero-slider__dot {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.45rem;
+    height: 0.45rem;
     border-radius: 999px;
-    background: rgba(3, 46, 21, 0.18);
+    background: rgba(255, 255, 255, 0.4);
     transition:
       transform 0.2s ease,
       background-color 0.2s ease,
       width 0.2s ease;
   }
 
+  .hero-slider__dot:hover {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
   .hero-slider__dot.is-active {
-    width: 2.5rem;
-    background: var(--primary);
+    width: 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
   }
 
   @media (max-width: 900px) {
@@ -416,9 +435,13 @@ const slides = Object.entries(heroImages)
       align-items: stretch;
     }
 
-    .hero-slider__nav-buttons,
-    .hero-slider__pagination {
+    .hero-slider__nav-buttons {
       justify-content: center;
+    }
+    
+    .hero-slider__pagination {
+      bottom: 1rem;
+      right: 1rem;
     }
   }
 
