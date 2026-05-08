@@ -2,12 +2,14 @@
 // filepath: d:\Programowanie\Projekty\coffee-blog\src\components\BlogPost\PostCard.astro
 import { Image } from 'astro:assets'
 
+import type { ImageMetadata } from 'astro'
+
 interface Props {
   title: string
   description: string
   publishDate: string
   author: string
-  image: string
+  image: string | ImageMetadata
   tags: string[]
   readTime: string
   slug: string
@@ -37,13 +39,23 @@ const formattedDate = new Date(publishDate).toLocaleDateString('pl-PL', {
 <article class={`post-card ${featured ? 'post-card--featured' : ''}`}>
   <a href={`/articles/${slug}`} class="post-card__link">
     <div class="post-card__image-container">
-      <Image
-        src={image}
-        alt={`Zdjęcie do artykułu: ${title}`}
-        width={600}
-        height={400}
-        class="post-card__image"
-      />
+      {typeof image === 'string' ? (
+        <img
+          src={image}
+          alt={`Zdjęcie do artykułu: ${title}`}
+          width="600"
+          height="400"
+          class="post-card__image"
+          loading="lazy"
+        />
+      ) : (
+        <Image
+          src={image}
+          alt={`Zdjęcie do artykułu: ${title}`}
+          width={600}
+          class="post-card__image"
+        />
+      )}
     </div>
     <div class="post-card__content">
       {featured && <span class="post-card__featured-badge">Wyróżniony</span>}
@@ -93,6 +105,31 @@ const formattedDate = new Date(publishDate).toLocaleDateString('pl-PL', {
     width: 100%;
     height: 200px;
     overflow: hidden;
+    background-color: #f0f0f0;
+    position: relative;
+  }
+
+  /* Animacja skeleton loading zapobiegająca nagłemu skakaniu layoutu */
+  .post-card__image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    z-index: 1;
+  }
+
+  @keyframes skeleton-loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
   }
 
   .post-card__image {
@@ -100,6 +137,8 @@ const formattedDate = new Date(publishDate).toLocaleDateString('pl-PL', {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
   }
 
   .post-card:hover .post-card__image {

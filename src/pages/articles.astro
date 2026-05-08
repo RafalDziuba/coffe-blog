@@ -82,23 +82,20 @@ const pageDescription =
       {
         currentPagePosts.length > 0 ? (
           <div class="articles-collection__grid">
-            {currentPagePosts.map((post) => {
-              const imagePath = post.data.image
-
-              return (
+            {currentPagePosts.map((post) => (
                 <PostCard
                   title={post.data.title}
                   description={post.data.description}
                   publishDate={post.data.publishDate}
                   author={post.data.author}
-                  image={imagePath}
+                  image={post.data.image}
                   tags={post.data.tags}
                   readTime={post.data.readTime}
                   slug={post.slug}
                   featured={post.data.featured}
                 />
               )
-            })}
+            )}
           </div>
         ) : (
           <div class="articles-empty">
