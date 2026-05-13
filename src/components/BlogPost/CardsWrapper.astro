@@ -49,37 +49,35 @@ if (showOnlyFeatured) {
 const headingId = `heading-${Math.random().toString(36).substring(2, 9)}`
 ---
 
-<section class={`cards-wrapper`}>
-  <h2
-    id={headingId}
-    class={`articles-collection__heading ${heading === 'Artykuły' ? 'visually-hidden' : ''}`}
-  >
-    {heading}
-  </h2>
+{postsToShow.length > 0 && (
+  <section class={`cards-wrapper`}>
+    <h2
+      id={headingId}
+      class={`articles-collection__heading ${heading === 'Artykuły' ? 'visually-hidden' : ''}`}
+    >
+      {heading}
+    </h2>
 
-  <div class="articles-collection__grid">
-    {
-      postsToShow.map(async (post) => {
-        // Dynamically import the image - this requires the images to be in src/assets
-        const imagePath = `/src/assets/posts/${post.slug}/cover.jpg`
-
-        return (
-          <PostCard
-            title={post.data.title}
-            description={post.data.description}
-            publishDate={post.data.publishDate}
-            author={post.data.author}
-            image={imagePath}
-            tags={post.data.tags}
-            readTime={post.data.readTime}
-            slug={post.slug}
-            featured={post.data.featured}
-          />
+    <div class="articles-collection__grid">
+      {
+        postsToShow.map((post) => (
+            <PostCard
+              title={post.data.title}
+              description={post.data.description}
+              publishDate={post.data.publishDate}
+              author={post.data.author}
+              image={post.data.image}
+              tags={post.data.tags}
+              readTime={post.data.readTime}
+              slug={post.slug}
+              featured={post.data.featured}
+            />
+          )
         )
-      })
-    }
-  </div>
-</section>
+      }
+    </div>
+  </section>
+)}
 
 <style>
   .cards-wrapper {

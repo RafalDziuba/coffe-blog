@@ -13,3 +13,19 @@
     padding: 4.5rem 6rem;
   }
 }
+
+/*
+ * Wewnętrzne kontenery sekcji trzymamy na szerokości hero-shell.
+ * Elementy, które same mają globalny padding, dostają szerokość zewnętrzną.
+ */
+.navigation__container,
+.footer__container,
+.footer__bottom {
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+.main-content {
+  max-width: 1472px;
+  margin-inline: auto;
+}

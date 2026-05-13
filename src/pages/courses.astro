@@ -4,7 +4,7 @@ export const prerender = true
 import BasicLayout from '../layouts/BasicLayout.astro'
 import { getCollection } from 'astro:content'
 import CourseCard from '../components/Courses/CourseCard.astro'
-import NewsletterCTA from '../components/Courses/NewsletterCTA.astro'
+import NewsletterSection from '../components/NewsletterSection.astro'
 import CoursesFAQ from '../components/Courses/CoursesFaq.astro'
 import { Image } from 'astro:assets'
 import coursesHeroIcon from '../assets/images/courses-hero-icon.svg'
@@ -115,7 +115,7 @@ const avgRating = 4.9
     )
   }
 
-  <NewsletterCTA />
+  <NewsletterSection />
   <CoursesFAQ />
 </BasicLayout>
 

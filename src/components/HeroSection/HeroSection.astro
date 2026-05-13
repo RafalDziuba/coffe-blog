@@ -1,36 +1,456 @@
 ---
-import dividerImage from '../../assets/divider.webp'
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+const heroImages = import.meta.glob('../../assets/images/hero-slider/*.{jpg,jpeg,png,webp,avif}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, ImageMetadata>
+
+const slideCopy = [
+  {
+    eyebrow: 'Pasja',
+    title: 'Kawa to coś więcej niż kofeina.',
+    description:
+      'Dołącz do społeczności, dla której liczy się każdy ziarnisty detal i wspólne celebrowanie poranków.',
+    ctaLabel: 'Dołącz do nas',
+    href: '/newsletter',
+  },
+  {
+    eyebrow: 'Profesjonalizm',
+    title: 'Precyzja w każdej kropli.',
+    description:
+      'Opanuj techniki, których używają najlepsi bariści na świecie. Twój domowy workflow na poziomie pro.',
+    ctaLabel: 'Zobacz kursy',
+    href: '/courses',
+  },
+  {
+    eyebrow: 'Inspirowanie',
+    title: 'Odkryj nowe profile smaku.',
+    description:
+      'Eksperymentuj z alternatywami i znajdź swoją ulubioną metodę parzenia. Daj się zainspirować do zmian.',
+    ctaLabel: 'Czytaj bloga',
+    href: '/articles',
+  },
+  {
+    eyebrow: 'Doświadczenie',
+    title: 'Wiedza sprawdzona w praktyce.',
+    description:
+      'Od lat szkolimy i parzymy setki kaw dziennie. Skróć swoją drogę do perfekcyjnego espresso z nami.',
+    ctaLabel: 'Poznaj naszą historię',
+    href: '/about',
+  },
+]
+
+const slides = Object.entries(heroImages)
+  .sort(([leftPath], [rightPath]) => {
+    const leftOrder = Number.parseInt(leftPath.match(/s(\d+)/)?.[1] ?? '0', 10)
+    const rightOrder = Number.parseInt(rightPath.match(/s(\d+)/)?.[1] ?? '0', 10)
+    return leftOrder - rightOrder
+  })
+  .map(([path, image], index) => ({
+    image,
+    alt: `Hero slider ${index + 1} dla Zakawieni`,
+    ...slideCopy[index],
+    id: `hero-slide-${index + 1}`,
+    key: path,
+  }))
 ---
 
-<header class="global-padding">
-  <h1>zakawieni</h1>
-  <p>Łączymy ludzi, których pasją jest kawa.</p>
+<header class="hero-slider global-padding" data-hero-slider aria-roledescription="carousel">
+  <div class="hero-slider__shell">
+    <div class="hero-slider__viewport" aria-live="polite">
+      {
+        slides.map((slide, index) => (
+          <article
+            class:list={{ 'hero-slider__slide': true, 'is-active': index === 0 }}
+            id={slide.id}
+            aria-hidden={index === 0 ? 'false' : 'true'}
+            data-slide
+            data-index={index}
+          >
+            <div class="hero-slider__media">
+              <Image
+                src={slide.image}
+                alt={slide.alt}
+                widths={[640, 960, 1280, 1600]}
+                sizes="(max-width: 767px) 100vw, (max-width: 1200px) 92vw, 1280px"
+                format="webp"
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchpriority={index === 0 ? 'high' : 'auto'}
+                class="hero-slider__image"
+              />
+            </div>
 
-  <div class="divider-container">
-    <img
-      src={dividerImage.src}
-      alt=""
-      width={dividerImage.width}
-      height={dividerImage.height}
-      class="divider-image"
-      aria-hidden="true"
-    />
+            <div class="hero-slider__overlay" />
+
+            <div class="hero-slider__content">
+              <p class="hero-slider__eyebrow">{slide.eyebrow}</p>
+              {index === 0 ? (
+                <h1 class="hero-slider__title">{slide.title}</h1>
+              ) : (
+                <h2 class="hero-slider__title">{slide.title}</h2>
+              )}
+              <p class="hero-slider__description">{slide.description}</p>
+              <a class="hero-slider__cta" href={slide.href}>
+                {slide.ctaLabel}
+              </a>
+            </div>
+          </article>
+        ))
+      }
+
+      <div class="hero-slider__pagination" aria-label="Wybierz slajd">
+        {
+          slides.map((slide, index) => (
+            <button
+              class:list={{ 'hero-slider__dot': true, 'is-active': index === 0 }}
+              type="button"
+              data-dot={index}
+              aria-label={`Pokaz slajd ${index + 1}: ${slide.eyebrow}`}
+              aria-controls={slide.id}
+              aria-pressed={index === 0 ? 'true' : 'false'}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="hero-slider__controls">
+      <div class="hero-slider__nav-buttons">
+        <button class="hero-slider__arrow" type="button" data-prev aria-label="Poprzedni slajd">
+          <span aria-hidden="true">&larr;</span>
+        </button>
+        <button class="hero-slider__arrow" type="button" data-next aria-label="Nastepny slajd">
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    </div>
   </div>
 </header>
 
+<script>
+  const slider = document.querySelector('[data-hero-slider]')
+
+  if (slider) {
+    const slides = Array.from(slider.querySelectorAll('[data-slide]'))
+    const dots = Array.from(slider.querySelectorAll('[data-dot]'))
+    const prevButton = slider.querySelector('[data-prev]')
+    const nextButton = slider.querySelector('[data-next]')
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let currentIndex = 0
+    let autoplayId: number | undefined
+
+    const syncUi = (nextIndex: number) => {
+      currentIndex = (nextIndex + slides.length) % slides.length
+
+      slides.forEach((slide, index) => {
+        const isActive = index === currentIndex
+        slide.classList.toggle('is-active', isActive)
+        slide.setAttribute('aria-hidden', String(!isActive))
+      })
+
+      dots.forEach((dot, index) => {
+        const isActive = index === currentIndex
+        dot.classList.toggle('is-active', isActive)
+        dot.setAttribute('aria-pressed', String(isActive))
+      })
+    }
+
+    const stopAutoplay = () => {
+      if (autoplayId !== undefined) {
+        window.clearInterval(autoplayId)
+      }
+    }
+
+    const startAutoplay = () => {
+      stopAutoplay()
+
+      if (prefersReducedMotion.matches || slides.length < 2) {
+        return
+      }
+
+      autoplayId = window.setInterval(() => {
+        syncUi(currentIndex + 1)
+      }, 6500)
+    }
+
+    prevButton?.addEventListener('click', () => {
+      syncUi(currentIndex - 1)
+      startAutoplay()
+    })
+
+    nextButton?.addEventListener('click', () => {
+      syncUi(currentIndex + 1)
+      startAutoplay()
+    })
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const nextIndex = Number.parseInt(dot.getAttribute('data-dot') ?? '0', 10)
+        syncUi(nextIndex)
+        startAutoplay()
+      })
+    })
+
+    slider.addEventListener('mouseenter', stopAutoplay)
+    slider.addEventListener('mouseleave', startAutoplay)
+    slider.addEventListener('focusin', stopAutoplay)
+    slider.addEventListener('focusout', startAutoplay)
+
+    syncUi(0)
+    startAutoplay()
+  }
+</script>
+
 <style>
-  header {
+  .hero-slider {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hero-slider__shell {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .hero-slider__viewport {
+    position: relative;
+    min-height: clamp(28rem, 72vh, 44rem);
+    border-radius: 2rem;
+    overflow: clip;
+    background: #041b10;
+    box-shadow: 0 28px 80px rgba(3, 46, 21, 0.22);
+  }
+
+  .hero-slider__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+
+  .hero-slider__slide.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .hero-slider__media,
+  .hero-slider__image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-slider__media :global(img),
+  .hero-slider__image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-slider__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(3, 22, 12, 0.88) 0%,
+        rgba(3, 22, 12, 0.64) 44%,
+        rgba(3, 22, 12, 0.18) 100%
+      ),
+      linear-gradient(180deg, rgba(3, 46, 21, 0.16) 0%, rgba(3, 46, 21, 0.42) 100%);
+  }
+
+  .hero-slider__content {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    gap: 1rem;
+    max-width: 38rem;
+    padding: clamp(2rem, 5vw, 4rem);
+    color: #fff;
+  }
+
+  .hero-slider__eyebrow {
+    width: fit-content;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-slider__title {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(2.8rem, 7vw, 5.6rem);
+    line-height: 0.96;
+    letter-spacing: -0.04em;
+    max-width: 10ch;
+  }
+
+  .hero-slider__description {
+    max-width: 34rem;
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .hero-slider__cta {
+    display: inline-flex;
+    width: fit-content;
     align-items: center;
     justify-content: center;
+    min-height: 3.5rem;
+    padding: 0.9rem 1.4rem;
+    border-radius: 999px;
+    background: var(--primary-accent);
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      filter 0.2s ease;
   }
 
-  .divider-container {
-    margin-top: 1rem;
-    width: 100%;
+  .hero-slider__cta:hover,
+  .hero-slider__cta:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+    filter: brightness(1.03);
+    outline: none;
+  }
+
+  .hero-slider__controls {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 0 0;
   }
 
+  .hero-slider__nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-slider__pagination {
+    position: absolute;
+    bottom: clamp(1.5rem, 4vw, 2.5rem);
+    right: clamp(1.5rem, 4vw, 2.5rem);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .hero-slider__arrow,
+  .hero-slider__dot {
+    border: 0;
+    cursor: pointer;
+  }
+
+  .hero-slider__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    background: rgba(3, 46, 21, 0.08);
+    color: var(--primary);
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .hero-slider__arrow:hover,
+  .hero-slider__arrow:focus-visible {
+    background: rgba(3, 46, 21, 0.14);
+    transform: translateY(-1px);
+    outline: none;
+  }
+
+  .hero-slider__dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.4);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      width 0.2s ease;
+  }
+
+  .hero-slider__dot:hover {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .hero-slider__dot.is-active {
+    width: 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  @media (max-width: 900px) {
+    .hero-slider__viewport {
+      min-height: 36rem;
+    }
+
+    .hero-slider__content {
+      max-width: 32rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-slider__viewport {
+      min-height: 34rem;
+      border-radius: 1.4rem;
+    }
+
+    .hero-slider__content {
+      justify-content: flex-end;
+      max-width: none;
+      padding: 1.5rem;
+    }
+
+    .hero-slider__controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero-slider__nav-buttons {
+      justify-content: center;
+    }
+    
+    .hero-slider__pagination {
+      bottom: 1rem;
+      right: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slider__slide,
+    .hero-slider__cta,
+    .hero-slider__arrow,
+    .hero-slider__dot {
+      transition: none;
+    }
+  }
 </style>

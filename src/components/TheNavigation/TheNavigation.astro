@@ -101,13 +101,20 @@ const isMobileView = false
 
 <style>
   .navigation {
-    position: relative;
+    position: sticky;
+    top: 0;
     width: 100%;
     z-index: 99;
     padding-top: 0;
     padding-bottom: 0;
     height: 64px;
+    background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .navigation.is-scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   .navigation__container {
@@ -265,6 +272,14 @@ const isMobileView = false
   }
 
   @media (min-width: 1024px) {
+    .navigation__container {
+      position: relative;
+    }
+
+    .navigation__left {
+      flex: 0 0 auto;
+    }
+
     .navigation__toggle {
       display: none;
     }
@@ -292,7 +307,14 @@ const isMobileView = false
     }
 
     .navigation__list--standard.navigation__list--desktop {
-      margin-left: 2rem;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-left: 0;
+    }
+
+    .navigation__list--featured.navigation__list--desktop {
+      margin-left: auto;
     }
   }
 
@@ -368,5 +390,18 @@ const isMobileView = false
         }
       })
     }
+
+    const navigation = document.querySelector('.navigation')
+    
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        navigation?.classList.add('is-scrolled')
+      } else {
+        navigation?.classList.remove('is-scrolled')
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
   })
 </script>

@@ -1,138 +1,294 @@
-<section class="newsletter-section global-padding">
-  <h2 class="newsletter-heading">
-    Zapisz się na newsletter po autorskie przepisy, promocje i nowości
-  </h2>
+---
+---
 
-  <form class="newsletter-form">
-    <!-- widocznie ukryta etykieta dla dostępności -->
-    <label for="email" class="sr-only">Adres e-mail</label>
-    <input
-      class="newsletter-input"
-      placeholder="Podaj swój email"
-      type="email"
-      name="email"
-      id="email"
-      required
-      autocomplete="email"
-      inputmode="email"
-      maxlength="50"
-    />
-    <button class="newsletter-button" type="submit">Subskrybuj</button>
-  </form>
+<section class="newsletter-panel">
+  <div class="newsletter-panel__container">
+    <div class="newsletter-panel__content">
+      <div class="newsletter-panel__text">
+        <h2 class="newsletter-panel__title">Nie przegap premierowych zniżek!</h2>
+        <p class="newsletter-panel__description">
+          Zapisz się do newslettera i otrzymaj <strong>10% zniżki</strong> na wszystkie nowe kursy w
+          dniu premiery. Dodatkowo dostaniesz ekskluzywne materiały i porady o kawie prosto na swoją
+          skrzynkę.
+        </p>
 
-  <p class="newsletter-subtext">
-    Wiadomości będą wysyłane co miesiąc. Wypisanie się z newslettera jest możliwe w każdej chwili.
-  </p>
+        <ul class="newsletter-panel__benefits">
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path
+                d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+              ></path>
+            </svg>
+            10% zniżki na nowe kursy
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path
+                d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z"
+              ></path>
+            </svg>
+            Ekskluzywne porady i przepisy
+          </li>
+
+        </ul>
+      </div>
+    </div>
+
+    <form class="newsletter-panel__form" id="newsletter-form">
+      <div class="newsletter-panel__field-group">
+        <input
+          class="newsletter-panel__input"
+          type="email"
+          id="newsletter-email"
+          name="email"
+          placeholder="Twój adres e-mail"
+          required
+          aria-label="Adres e-mail"
+        />
+        <button type="submit" class="newsletter-panel__submit">
+          Zapisz się
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" aria-hidden="true">
+            <path
+              d="M5 10h10m0 0l-4-4m4 4l-4 4"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+      <p class="newsletter-panel__note">
+        Bez spamu, możesz się wypisać w każdej chwili.
+        <a href="/privacy-policy">Polityka prywatności</a>
+      </p>
+    </form>
+  </div>
 </section>
 
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const emailInput = document.getElementById('newsletter-email') as HTMLInputElement
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement
+
+      if (!emailInput || !submitBtn) return
+
+      const email = emailInput.value
+
+      // Disable form
+      submitBtn.disabled = true
+      submitBtn.textContent = 'Zapisywanie...'
+
+      try {
+        // Tutaj dodasz integrację z API (np. Mailchimp, SendGrid)
+        const response = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        })
+
+        if (response.ok) {
+          // Success
+          emailInput.value = ''
+          submitBtn.textContent = '✓ Zapisano!'
+          submitBtn.style.backgroundColor = '#28a745'
+
+          setTimeout(() => {
+            submitBtn.textContent = 'Zapisz się'
+            submitBtn.style.backgroundColor = ''
+            submitBtn.disabled = false
+          }, 3000)
+        } else {
+          throw new Error('Błąd zapisu')
+        }
+      } catch (error) {
+        // Error
+        submitBtn.textContent = '✗ Błąd'
+        submitBtn.style.backgroundColor = '#dc3545'
+
+        setTimeout(() => {
+          submitBtn.textContent = 'Zapisz się'
+          submitBtn.style.backgroundColor = ''
+          submitBtn.disabled = false
+        }, 3000)
+      }
+    })
+  }
+</script>
+
 <style>
-  .newsletter-section {
+  .newsletter-panel {
+    background: linear-gradient(
+      135deg,
+      var(--primary, #032e15) 0%,
+      var(--primary-light, #0c4e29) 100%
+    );
+    padding: 5rem 2rem;
+    border-radius: 15px;
+    margin: 4rem 0;
+  }
+
+  .newsletter-panel__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .newsletter-panel__content {
+    display: flex;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .newsletter-panel__text {
+    flex: 1;
+  }
+
+  .newsletter-panel__title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .newsletter-panel__description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .newsletter-panel__description strong {
+    color: var(--primary-accent, #f4a261);
+    font-weight: 700;
+  }
+
+  .newsletter-panel__benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .newsletter-panel__benefits li {
+    display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    background-color: var(--primary);
-    width: 100%;
-    color: white;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
   }
 
-  .newsletter-heading {
+  .newsletter-panel__benefits svg {
+    flex-shrink: 0;
+    color: var(--primary-accent, #f4a261);
+  }
+
+  .newsletter-panel__form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .newsletter-panel__field-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .newsletter-panel__input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .newsletter-panel__input:focus {
+    outline: none;
+    border-color: var(--primary, #032e15);
+  }
+
+  .newsletter-panel__submit {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--primary, #032e15);
     color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .newsletter-panel__submit:hover:not(:disabled) {
+    background-color: var(--primary-light, #0c4e29);
+    transform: translateY(-2px);
+  }
+
+  .newsletter-panel__submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .newsletter-panel__note {
+    font-size: 0.85rem;
+    color: #666;
     text-align: center;
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-    margin-bottom: 2.5rem;
+    margin: 0;
   }
 
-  .newsletter-form {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    justify-content: center; /* centrowanie zawartości (input + button) */
-    max-width: 600px;
-    width: 100%;
+  .newsletter-panel__note a {
+    color: var(--primary, #032e15);
+    text-decoration: underline;
   }
 
-  @media (min-width: 640px) {
-    .newsletter-form {
-      grid-template-columns: 1fr auto; /* input + button w jednej linii */
+  @media (max-width: 1024px) {
+    .newsletter-panel__container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .newsletter-panel__title {
+      font-size: 2rem;
     }
   }
 
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+  @media (max-width: 768px) {
+    .newsletter-panel {
+      padding: 3rem 1.5rem;
+    }
 
-  .newsletter-input {
-    height: 3rem;
-    padding: 0.5rem 1.25rem;
-    background-color: white;
-    border-radius: 0.25rem;
-    border: 1px solid transparent;
-    color: var(--primary); /* lepszy kontrast niż szary tekst */
-    transition:
-      box-shadow 0.2s ease,
-      border-color 0.2s ease;
-    width: 100%;
-  }
+    .newsletter-panel__content {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
 
-  .newsletter-input::placeholder {
-    color: rgb(156, 163, 175);
-  }
+    .newsletter-panel__title {
+      font-size: 1.75rem;
+    }
 
-  .newsletter-input:focus {
-    outline: none;
-    border-color: var(--primary-accent);
-    box-shadow:
-      0 0 0 2px #fff,
-      0 0 0 5px var(--primary-accent);
-  }
-
-  .newsletter-button {
-    height: 3rem;
-    background-color: var(--primary-accent);
-    color: var(--primary);
-    border-radius: 0.25rem;
-    border: none;
-    font-weight: 700;
-    cursor: pointer;
-    padding: 0 1.25rem;
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease,
-      transform 0.15s ease,
-      box-shadow 0.2s ease,
-      filter 0.15s ease; /* dodano filter */
-  }
-
-  .newsletter-button:hover,
-  .newsletter-button:focus-visible {
-    /* delikatny efekt: bez podbicia koloru tekstu, bez uniesienia */
-    filter: brightness(1.05);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
-    outline: none;
-    transform: none;
-    background-color: var(--primary-accent); /* zachowaj spójność koloru */
-    color: var(--primary);
-  }
-
-  .newsletter-button:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  }
-
-  .newsletter-subtext {
-    text-align: center;
-    font-size: 0.75rem;
-    font-family: var(--font-primary);
-    margin-top: 1rem;
+    .newsletter-panel__description {
+      font-size: 1rem;
+    }
   }
 </style>

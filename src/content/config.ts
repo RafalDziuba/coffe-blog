@@ -1,14 +1,18 @@
 import { defineCollection, z } from 'astro:content'
+import { POST_TAGS } from '../data/post-tags'
+
+const postTagSchema = z.enum(POST_TAGS)
 
 const postsCollection = defineCollection({
-  schema: z.object({
+  type: 'content',
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     publishDate: z.string(),
     updatedDate: z.string().optional(),
     author: z.string(),
-    image: z.string(),
-    tags: z.array(z.string()),
+    image: image(),
+    tags: z.array(postTagSchema).min(1),
     readTime: z.string(),
     featured: z.boolean().optional().default(false),
   }),
