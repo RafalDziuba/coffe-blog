@@ -166,13 +166,7 @@ const twitterCardType = image ? 'summary_large_image' : 'summary'
           <h1 class="article__title">{title}</h1>
 
           <div class="article__tags">
-            {
-              tags.map((tag) => (
-                <a href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`} class="article__tag">
-                  {tag}
-                </a>
-              ))
-            }
+            {tags.map((tag) => <span class="article__tag">{tag}</span>)}
           </div>
 
           <div class="article__featured-image">
@@ -276,17 +270,12 @@ const twitterCardType = image ? 'summary_large_image' : 'summary'
   }
 
   .article__tag {
+    display: inline-block;
     background-color: #f0f0f0;
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.8rem;
     color: #666;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-  }
-
-  .article__tag:hover {
-    background-color: #e0e0e0;
   }
 
   .article__featured-image {
