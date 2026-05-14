@@ -62,9 +62,15 @@ const pageDescription =
   sort === 'oldest'
     ? 'Przeczytaj nasze artykuły o kawie od najstarszych, poznaj historię naszego bloga.'
     : 'Przeczytaj najnowsze artykuły o kawie, metodach parzenia, sprzęcie i więcej.'
+
+const listingSearch = Astro.url.searchParams.toString()
+const canonicalURL = new URL(
+  `${Astro.url.pathname}${listingSearch ? `?${listingSearch}` : ''}`,
+  Astro.site ?? Astro.url,
+).href
 ---
 
-<BasicLayout title={pageTitle} description={pageDescription}>
+<BasicLayout title={pageTitle} description={pageDescription} canonicalURL={canonicalURL}>
   <div class="articles-container">
     <header class="articles-header">
       <h1 class="articles-title">Wszystkie artykuły</h1>

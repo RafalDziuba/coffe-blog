@@ -1,22 +1,84 @@
 ---
-import TheFooter from "../components/TheFooter/TheFooter.astro";
-import TheNavigation from "../components/TheNavigation/TheNavigation.astro";
-import "../styles/global.css";
+import TheFooter from '../components/TheFooter/TheFooter.astro'
+import TheNavigation from '../components/TheNavigation/TheNavigation.astro'
+import '../styles/global.css'
 
 import type { Props } from '../types/basicLayoutTypes'
+import defaultOgImage from '../assets/images/hero-slider/s1.jpg'
 
-const { title, description }: Props = Astro.props
+const {
+  title,
+  description,
+  canonicalURL,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  twitterCard,
+} = Astro.props
+
+const site = Astro.site ?? Astro.url
+
+const absoluteUrl = (pathOrUrl: string) => {
+  if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
+    return pathOrUrl
+  }
+  const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`
+  return new URL(path, site).href
+}
+
+const pathname = Astro.url.pathname
+const search = Astro.url.search
+const canonical =
+  canonicalURL ?? new URL(`${pathname}${search}` || '/', site).href
+
+const defaultOg = absoluteUrl(defaultOgImage.src)
+const ogImageUrl = ogImage ? absoluteUrl(ogImage) : defaultOg
+
+const twitterCardType =
+  twitterCard ?? (ogImageUrl ? 'summary_large_image' : 'summary')
+
+const rssHref = new URL('/rss.xml', site).href
 ---
 
 <!doctype html>
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <title>{title}</title>
+
+    <link rel="canonical" href={canonical} />
+    <meta
+      name="robots"
+      content={noindex ? 'noindex, nofollow' : 'index, follow'}
+    />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:site_name" content="Zakawieni" />
+
+    <meta name="twitter:card" content={twitterCardType} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Zakawieni — blog o kawie"
+      href={rssHref}
+    />
+
+    <slot name="head" />
   </head>
   <body>
     <TheNavigation />
@@ -28,4 +90,3 @@ const { title, description }: Props = Astro.props
     <TheFooter />
   </body>
 </html>
-

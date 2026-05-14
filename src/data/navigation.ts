@@ -44,12 +44,12 @@ export const footerOnlyLinks: NavigationLink[] = [
   },
   { href: '/terms-and-conditions', text: 'Regulamin', showInFooter: true, footerCategory: 'legal' },
   { href: '/cookies', text: 'Polityka cookies', showInFooter: true, footerCategory: 'legal' },
-  {
-    href: '/contact-form',
-    text: 'Formularz kontaktowy',
-    showInFooter: true,
-    footerCategory: 'contact',
-  },
+  // {
+  //   href: '/contact-form',
+  //   text: 'Formularz kontaktowy',
+  //   showInFooter: true,
+  //   footerCategory: 'contact',
+  // },
 ]
 
 
