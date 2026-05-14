@@ -1,6 +1,17 @@
 ---
 // filepath: d:\Programowanie\Projekty\coffee-blog\src\components\AboutContent.astro
 import { Image } from 'astro:assets'
+
+import baristaWork from '../assets/images/about/barista-work.jpg'
+import coffeeDetails from '../assets/images/about/coffee-details.jpg'
+import coffeeShop from '../assets/images/about/coffee-shop.png'
+import workshop from '../assets/images/about/workshop.jpg'
+
+const gallerySizes = '(max-width: 480px) 100vw, (max-width: 768px) 50vw, min(400px, 33vw)'
+
+const galleryWidth = 960
+const galleryHeight = (meta: typeof coffeeShop) =>
+  Math.max(1, Math.round((meta.height / meta.width) * galleryWidth))
 ---
 
 <article class="about-content">
@@ -34,15 +45,15 @@ import { Image } from 'astro:assets'
         <div class="stat-label">Lat doświadczenia</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">500+</div>
+        <div class="stat-number">100+</div>
         <div class="stat-label">Uczestników szkoleń</div>
       </div>
-      <div class="stat-item">
+      <!-- <div class="stat-item">
         <div class="stat-number">15+</div>
         <div class="stat-label">Kursów online</div>
-      </div>
+      </div> -->
       <div class="stat-item">
-        <div class="stat-number">100%</div>
+        <div class="stat-number">800+</div>
         <div class="stat-label">Zadowolonych klientów</div>
       </div>
     </div>
@@ -136,10 +147,8 @@ import { Image } from 'astro:assets'
       <div class="highlight-box">
         <div class="highlight-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 2v20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            ></path>
             <path
-              d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"></path>
@@ -158,39 +167,57 @@ import { Image } from 'astro:assets'
     <h2 class="section-title">Nasza historia w obrazach</h2>
     <div class="gallery-grid">
       <div class="gallery-item">
-        <img
-          src="/images/about/coffee-shop.jpg"
+        <Image
+          src={coffeeShop}
           alt="Wnętrze kawiarni Zakawieni - przytulne miejsce spotkań miłośników kawy"
+          width={galleryWidth}
+          height={galleryHeight(coffeeShop)}
+          densities={[1, 2]}
+          sizes={gallerySizes}
           class="gallery-image"
           loading="lazy"
         />
         <p class="gallery-caption">Nasza kawiarnia</p>
       </div>
       <div class="gallery-item">
-        <img
-          src="/images/about/barista-work.jpg"
+        <Image
+          src={baristaWork}
           alt="Barista przygotowuje latte art - profesjonalna praca z kawą"
+          width={galleryWidth}
+          height={galleryHeight(baristaWork)}
+          densities={[1, 2]}
+          sizes={gallerySizes}
           class="gallery-image"
           loading="lazy"
         />
         <p class="gallery-caption">Sztuka parzenia</p>
       </div>
       <div class="gallery-item">
-        <img
-          src="/images/about/workshop.jpg"
+        <Image
+          src={workshop}
           alt="Uczestnicy kursu baristycznego podczas warsztatów - szkolenia z kawy"
+          width={galleryWidth}
+          height={galleryHeight(workshop)}
+          densities={[1, 2]}
+          sizes={gallerySizes}
           class="gallery-image"
           loading="lazy"
         />
         <p class="gallery-caption">Warsztaty i kursy</p>
       </div>
       <div class="gallery-item">
-        <img
-          src="/images/about/coffee-details.jpg"
-          alt="Detale kawowe - świeżo palone ziarna kawy i profesjonalny sprzęt"
-          class="gallery-image"
-          loading="lazy"
-        />
+        <div class="gallery-image-wrap gallery-image-wrap--details">
+          <Image
+            src={coffeeDetails}
+            alt="Detale kawowe - świeżo palone ziarna kawy i profesjonalny sprzęt"
+            width={galleryWidth}
+            height={galleryHeight(coffeeDetails)}
+            densities={[1, 2]}
+            sizes={gallerySizes}
+            class="gallery-image gallery-image--details"
+            loading="lazy"
+          />
+        </div>
         <p class="gallery-caption">Pasja w detalu</p>
       </div>
     </div>
@@ -356,8 +383,13 @@ import { Image } from 'astro:assets'
   .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 0;
     background: #f5f5f5;
+  }
+
+  .gallery-image-wrap--details {
+    height: 280px;
+    overflow: hidden;
   }
 
   .gallery-image {
@@ -368,7 +400,16 @@ import { Image } from 'astro:assets'
     transition: transform 0.3s ease;
   }
 
+  /* object-position zamiast translateY — inaczej na dole widać tło #f5f5f5 */
+  .gallery-image--details {
+    object-position: center 88%;
+  }
+
   .gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+  }
+
+  .gallery-item:hover .gallery-image--details {
     transform: scale(1.05);
   }
 
@@ -487,6 +528,10 @@ import { Image } from 'astro:assets'
     }
 
     .gallery-image {
+      height: 200px;
+    }
+
+    .gallery-image-wrap--details {
       height: 200px;
     }
 
