@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
       body: JSON.stringify({
         email: email,
-        status: 'active', // Możesz zmienić na 'unconfirmed', jeśli chcesz double opt-in
+        status: 'unconfirmed', // Włączone, aby użytkownik musiał potwierdzić zapis
       }),
     });
 
